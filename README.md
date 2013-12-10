@@ -9,4 +9,4 @@ I removed some features. Might add them in later in a different way. Features re
 * Keyboard controls are entirely gone... not sure about overwriting things in obj.onkeyup. Ideally mutation observers should be used, but that is only supported in IE11+...
 * reverseButtons was changed to reverse_buttons... is reversebuttons better? I'm not sure.
 
-The CSS is the same, and copied here for convenience. I only claim the JS file as my own. Thus, there are two licenses, separately for the JS and CSS.
+The CSS is the same, and copied here for convenience. I only claim the JS file as my own. Thus, there are two MIT licenses, separately for the JS and CSS.
