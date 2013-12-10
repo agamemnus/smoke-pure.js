@@ -1,5 +1,7 @@
 The MIT License (MIT)
 
+(JS portions only)
+
 Copyright (c) 2013 Michael Romanovsky
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
