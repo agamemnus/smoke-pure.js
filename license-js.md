@@ -1,6 +1,6 @@
-The MIT License (MIT)
-
 (JS portions only)
+
+The MIT License (MIT)
 
 Copyright (c) 2013 Michael Romanovsky
 
