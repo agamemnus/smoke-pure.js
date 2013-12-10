@@ -1,7 +1,7 @@
 smoke-pure.js
 ===============
 
-Inspired by https://github.com/hxgf/smoke.js. I wanted to get rid of the DOM ID reliance that smoke.js had. This also fixes a bug where the actual base elements are never deleted, only hidden.
+Inspired by https://github.com/hxgf/smoke.js. I wanted to get rid of the DOM ID reliance that smoke.js had. This also fixes a bug where the actual base elements are never deleted after use, only hidden.
 
 I removed some features. Might add them in later in a different way. Features removed (possibly not an exhaustive list):
 * No "quiz" or "signal" items. Just alert, prompt, and confirm.
