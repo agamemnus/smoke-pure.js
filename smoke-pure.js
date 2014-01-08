@@ -1,6 +1,6 @@
 void function () {
  var smoke = {}
- smoke.zindex = 1000
+ smoke.zindex = 10000
  
  smoke.build = function (text, params) {
   var obj = document.createElement('div'); obj.className = 'smoke-base smoke-visible smoke-' + params.type; obj.style.zIndex = smoke.zindex
@@ -38,6 +38,7 @@ void function () {
   if  (params.type == 'alert')                                 {obj.addEventListener ('click', function (evt) {if (evt.currentTarget != evt.target) return; obj.parentNode.removeChild (obj); params.callback ()     })}
   if ((params.type == 'prompt') || (params.type == 'confirm')) {obj.addEventListener ('click', function (evt) {if (evt.currentTarget != evt.target) return; obj.parentNode.removeChild (obj); params.callback (false)})}
 		document.smoke_pure_obj = obj
+  if (typeof params.callback == "undefined") params.callback = function () {}
 		obj.params = params
   smoke['finishbuilding_' + params.type] (obj, params)
   
@@ -101,11 +102,11 @@ void function () {
  var action_list = ['alert', 'confirm', 'prompt']
  for (var i = 0; i < action_list.length; i++) {
   void function (current_action) {
-   smoke[current_action] = function (text, callback, params) {return smoke.build (text, merge_objects (params, {callback: callback, type: current_action}))}
+   smoke[current_action] = function (text, callback, params) {return smoke.build (text, merge_objects ({callback: callback, type: current_action}, params))}
   } (action_list[i])
  }
  
- function merge_objects (primary, secondary) {
+ function merge_objects (secondary, primary) {
   // The primary object's duplicate keys are superior. The secondary object's duplicate keys are inferior.
   if (typeof secondary == "undefined") var primary = primary.primary, secondary = primary.secondary
   var new_object = {}
