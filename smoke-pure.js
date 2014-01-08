@@ -34,12 +34,12 @@ void function () {
   dialog_inner.appendChild (text_div)
   if (typeof prompt != "undefined") dialog_inner.appendChild (prompt)
   dialog_inner.appendChild (buttons)
-		
+  
   if  (params.type == 'alert')                                 {obj.addEventListener ('click', function (evt) {if (evt.currentTarget != evt.target) return; obj.parentNode.removeChild (obj); params.callback ()     })}
   if ((params.type == 'prompt') || (params.type == 'confirm')) {obj.addEventListener ('click', function (evt) {if (evt.currentTarget != evt.target) return; obj.parentNode.removeChild (obj); params.callback (false)})}
-		document.smoke_pure_obj = obj
+  document.smoke_pure_obj = obj
   if (typeof params.callback == "undefined") params.callback = function () {}
-		obj.params = params
+  obj.params = params
   smoke['finishbuilding_' + params.type] (obj, params)
   
   document.body.appendChild (obj)
@@ -47,58 +47,58 @@ void function () {
  }
  
  smoke.finishbuilding_alert   = function (obj) {
-		obj.callback_ok = function () {obj.params.callback ()}
-	 obj.destroy_listeners = function () {delete (document.smoke_pure_obj); document.removeEventListener ('keypress', ok_function)}
-		document.addEventListener       ('keypress', ok_function)
+  obj.callback_ok = function () {obj.params.callback ()}
+  obj.destroy_listeners = function () {delete (document.smoke_pure_obj); document.removeEventListener ('keypress', ok_function)}
+  document.addEventListener       ('keypress', ok_function)
   obj.buttons.ok.addEventListener ('click'   , ok_function)
-		obj.buttons.ok.smoke_pure_obj = obj
+  obj.buttons.ok.smoke_pure_obj = obj
  }
  smoke.finishbuilding_confirm = function (obj) {
-		obj.callback_ok     = function () {obj.params.callback (true)}
-		obj.callback_cancel = function () {obj.params.callback (false)}
-	 obj.destroy_listeners = function () {
-			delete (document.smoke_pure_obj)
-			document.removeEventListener ('keypress', ok_function)
-		 document.removeEventListener ('keypress', cancel_function)
-		}
-		document.addEventListener           ('keypress', ok_function)
+  obj.callback_ok     = function () {obj.params.callback (true)}
+  obj.callback_cancel = function () {obj.params.callback (false)}
+  obj.destroy_listeners = function () {
+   delete (document.smoke_pure_obj)
+   document.removeEventListener ('keypress', ok_function)
+   document.removeEventListener ('keypress', cancel_function)
+  }
+  document.addEventListener           ('keypress', ok_function)
   obj.buttons.ok.addEventListener     ('click'   , ok_function)
- 	document.addEventListener           ('keypress', cancel_function)
+  document.addEventListener           ('keypress', cancel_function)
   obj.buttons.cancel.addEventListener ('click'   , cancel_function)
-		obj.buttons.ok.smoke_pure_obj     = obj
-		obj.buttons.cancel.smoke_pure_obj = obj
+  obj.buttons.ok.smoke_pure_obj     = obj
+  obj.buttons.cancel.smoke_pure_obj = obj
  }
  smoke.finishbuilding_prompt  = function (obj) {
-		obj.callback_ok     = function () {obj.params.callback (obj.prompt.input.value)}
-		obj.callback_cancel = function () {obj.params.callback (false)}
-	 obj.destroy_listeners = function () {
-		 delete (document.smoke_pure_obj)
-			document.removeEventListener ('keypress', ok_function)
-		 document.removeEventListener ('keypress', cancel_function)
-		}
-		document.addEventListener           ('keypress', ok_function)
+  obj.callback_ok     = function () {obj.params.callback (obj.prompt.input.value)}
+  obj.callback_cancel = function () {obj.params.callback (false)}
+  obj.destroy_listeners = function () {
+   delete (document.smoke_pure_obj)
+   document.removeEventListener ('keypress', ok_function)
+   document.removeEventListener ('keypress', cancel_function)
+  }
+  document.addEventListener           ('keypress', ok_function)
   obj.buttons.ok.addEventListener     ('click'   , ok_function)
-		document.addEventListener           ('keypress', cancel_function)
+  document.addEventListener           ('keypress', cancel_function)
   obj.buttons.cancel.addEventListener ('click'   , cancel_function)
-		obj.buttons.ok.smoke_pure_obj     = obj
-		obj.buttons.cancel.smoke_pure_obj = obj
+  obj.buttons.ok.smoke_pure_obj     = obj
+  obj.buttons.cancel.smoke_pure_obj = obj
  }
  
-	function ok_function (evt) {
-	 var obj = evt.currentTarget.smoke_pure_obj
-	 if ((typeof evt.keyCode != "undefined") && (evt.keyCode != 13)) return
-	 obj.destroy_listeners ()
-		obj.parentNode.removeChild (obj)
-		obj.callback_ok ()
-	}
-	function cancel_function (evt) {
-		var obj = evt.currentTarget.smoke_pure_obj
-		if ((typeof evt.keyCode != "undefined") && (evt.keyCode != 27)) return
-	 obj.destroy_listeners ()
-		obj.parentNode.removeChild (obj)
-	 obj.callback_cancel ()
-	}
-	
+ function ok_function (evt) {
+  var obj = evt.currentTarget.smoke_pure_obj
+  if ((typeof evt.keyCode != "undefined") && (evt.keyCode != 13)) return
+  obj.destroy_listeners ()
+  obj.parentNode.removeChild (obj)
+  obj.callback_ok ()
+ }
+ function cancel_function (evt) {
+  var obj = evt.currentTarget.smoke_pure_obj
+  if ((typeof evt.keyCode != "undefined") && (evt.keyCode != 27)) return
+  obj.destroy_listeners ()
+  obj.parentNode.removeChild (obj)
+  obj.callback_cancel ()
+ }
+ 
  var action_list = ['alert', 'confirm', 'prompt']
  for (var i = 0; i < action_list.length; i++) {
   void function (current_action) {
@@ -115,7 +115,7 @@ void function () {
   return new_object
  }
  
-	
+ 
 function getKeyCodeString (evt) {
  var keyCode = evt.keyCode
  switch (keyCode) {
