@@ -47,7 +47,8 @@ void function () {
  }
  
  smoke.finishbuilding_alert   = function (obj) {
-  obj.callback_ok = function () {obj.params.callback ()}
+  obj.callback_ok = function () {
+  obj.params.callback ()}
   obj.destroy_listeners = function () {delete (document.smoke_pure_obj); document.removeEventListener ('keypress', ok_function)}
   document.addEventListener       ('keypress', ok_function)
   obj.buttons.ok.addEventListener ('click'   , ok_function)
@@ -86,14 +87,14 @@ void function () {
  
  function ok_function (evt) {
   var obj = evt.currentTarget.smoke_pure_obj
-  if ((typeof evt.keyCode != "undefined") && (evt.keyCode != 13)) return
+  if (((typeof evt.keyCode != "undefined") && (evt.keyCode != 0)) && (evt.keyCode != 13)) return
   obj.destroy_listeners ()
   obj.parentNode.removeChild (obj)
   obj.callback_ok ()
  }
  function cancel_function (evt) {
   var obj = evt.currentTarget.smoke_pure_obj
-  if ((typeof evt.keyCode != "undefined") && (evt.keyCode != 27)) return
+  if (((typeof evt.keyCode != "undefined") && (evt.keyCode != 0)) && (evt.keyCode != 27)) return
   obj.destroy_listeners ()
   obj.parentNode.removeChild (obj)
   obj.callback_cancel ()
