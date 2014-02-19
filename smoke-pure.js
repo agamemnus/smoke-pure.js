@@ -43,15 +43,16 @@ void function () {
   smoke['finishbuilding_' + params.type] (obj, params)
   
   document.body.appendChild (obj)
+  if (typeof obj.prompt != "undefined") obj.prompt.input.focus ()
   return obj
  }
  
  smoke.finishbuilding_alert   = function (obj) {
   obj.callback_ok = function () {
   obj.params.callback ()}
-  obj.destroy_listeners = function () {delete (document.smoke_pure_obj); document.removeEventListener ('keypress', ok_function)}
-  document.addEventListener       ('keypress', ok_function)
-  obj.buttons.ok.addEventListener ('click'   , ok_function)
+  obj.destroy_listeners = function () {delete (document.smoke_pure_obj); document.removeEventListener ('keyup', ok_function)}
+  document.addEventListener       ('keyup', ok_function)
+  obj.buttons.ok.addEventListener ('click', ok_function)
   obj.buttons.ok.smoke_pure_obj = obj
  }
  smoke.finishbuilding_confirm = function (obj) {
@@ -59,13 +60,13 @@ void function () {
   obj.callback_cancel = function () {obj.params.callback (false)}
   obj.destroy_listeners = function () {
    delete (document.smoke_pure_obj)
-   document.removeEventListener ('keypress', ok_function)
-   document.removeEventListener ('keypress', cancel_function)
+   document.removeEventListener ('keyup', ok_function)
+   document.removeEventListener ('keyup', cancel_function)
   }
-  document.addEventListener           ('keypress', ok_function)
-  obj.buttons.ok.addEventListener     ('click'   , ok_function)
-  document.addEventListener           ('keypress', cancel_function)
-  obj.buttons.cancel.addEventListener ('click'   , cancel_function)
+  document.addEventListener           ('keyup', ok_function)
+  obj.buttons.ok.addEventListener     ('click', ok_function)
+  document.addEventListener           ('keyup', cancel_function)
+  obj.buttons.cancel.addEventListener ('click', cancel_function)
   obj.buttons.ok.smoke_pure_obj     = obj
   obj.buttons.cancel.smoke_pure_obj = obj
  }
@@ -74,13 +75,13 @@ void function () {
   obj.callback_cancel = function () {obj.params.callback (false)}
   obj.destroy_listeners = function () {
    delete (document.smoke_pure_obj)
-   document.removeEventListener ('keypress', ok_function)
-   document.removeEventListener ('keypress', cancel_function)
+   document.removeEventListener ('keyup', ok_function)
+   document.removeEventListener ('keyup', cancel_function)
   }
-  document.addEventListener           ('keypress', ok_function)
-  obj.buttons.ok.addEventListener     ('click'   , ok_function)
-  document.addEventListener           ('keypress', cancel_function)
-  obj.buttons.cancel.addEventListener ('click'   , cancel_function)
+  document.addEventListener           ('keyup', ok_function)
+  obj.buttons.ok.addEventListener     ('click', ok_function)
+  document.addEventListener           ('keyup', cancel_function)
+  obj.buttons.cancel.addEventListener ('click', cancel_function)
   obj.buttons.ok.smoke_pure_obj     = obj
   obj.buttons.cancel.smoke_pure_obj = obj
  }
