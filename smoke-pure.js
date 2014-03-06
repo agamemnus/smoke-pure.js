@@ -1,5 +1,6 @@
 void function () {
  var smoke = {}
+ smoke.point_event = 'click'
  smoke.zindex = 10000
  
  smoke.build = function (text, params) {
@@ -7,6 +8,8 @@ void function () {
   var ok        = (typeof params.ok        != "undefined") ? (params.ok)        : "OK"
   var cancel    = (typeof params.cancel    != "undefined") ? (params.cancel)    : "Cancel"
   var className = (typeof params.className != "undefined") ? (params.className) : ""
+  var parent    = (typeof params.parent    != "undefined") ? (params.parent)    : document.body
+  
   if (params.type == 'prompt') {
    var prompt = obj.prompt = document.createElement ('div'); prompt.className = 'dialog-prompt'
    prompt.input = document.createElement ('input'); prompt.input.type = 'text'
@@ -35,14 +38,14 @@ void function () {
   if (typeof prompt != "undefined") dialog_inner.appendChild (prompt)
   dialog_inner.appendChild (buttons)
   
-  if  (params.type == 'alert')                                 {obj.addEventListener ('click', function (evt) {if (evt.currentTarget != evt.target) return; obj.parentNode.removeChild (obj); params.callback ()     })}
-  if ((params.type == 'prompt') || (params.type == 'confirm')) {obj.addEventListener ('click', function (evt) {if (evt.currentTarget != evt.target) return; obj.parentNode.removeChild (obj); params.callback (false)})}
+  if  (params.type == 'alert')                                 {obj.addEventListener (smoke.point_event, function (evt) {if (evt.currentTarget != evt.target) return; obj.parentNode.removeChild (obj); params.callback ()     })}
+  if ((params.type == 'prompt') || (params.type == 'confirm')) {obj.addEventListener (smoke.point_event, function (evt) {if (evt.currentTarget != evt.target) return; obj.parentNode.removeChild (obj); params.callback (false)})}
   document.smoke_pure_obj = obj
   if (typeof params.callback == "undefined") params.callback = function () {}
   obj.params = params
   smoke['finishbuilding_' + params.type] (obj, params)
   
-  document.body.appendChild (obj)
+  parent.appendChild (obj)
   if (typeof obj.prompt != "undefined") obj.prompt.input.focus ()
   return obj
  }
@@ -52,7 +55,7 @@ void function () {
   obj.params.callback ()}
   obj.destroy_listeners = function () {delete (document.smoke_pure_obj); document.removeEventListener ('keyup', ok_function)}
   document.addEventListener       ('keyup', ok_function)
-  obj.buttons.ok.addEventListener ('click', ok_function)
+  obj.buttons.ok.addEventListener (smoke.point_event, ok_function)
   obj.buttons.ok.smoke_pure_obj = obj
  }
  smoke.finishbuilding_confirm = function (obj) {
@@ -64,9 +67,9 @@ void function () {
    document.removeEventListener ('keyup', cancel_function)
   }
   document.addEventListener           ('keyup', ok_function)
-  obj.buttons.ok.addEventListener     ('click', ok_function)
+  obj.buttons.ok.addEventListener     (smoke.point_event, ok_function)
   document.addEventListener           ('keyup', cancel_function)
-  obj.buttons.cancel.addEventListener ('click', cancel_function)
+  obj.buttons.cancel.addEventListener (smoke.point_event, cancel_function)
   obj.buttons.ok.smoke_pure_obj     = obj
   obj.buttons.cancel.smoke_pure_obj = obj
  }
@@ -79,9 +82,9 @@ void function () {
    document.removeEventListener ('keyup', cancel_function)
   }
   document.addEventListener           ('keyup', ok_function)
-  obj.buttons.ok.addEventListener     ('click', ok_function)
+  obj.buttons.ok.addEventListener     (smoke.point_event, ok_function)
   document.addEventListener           ('keyup', cancel_function)
-  obj.buttons.cancel.addEventListener ('click', cancel_function)
+  obj.buttons.cancel.addEventListener (smoke.point_event, cancel_function)
   obj.buttons.ok.smoke_pure_obj     = obj
   obj.buttons.cancel.smoke_pure_obj = obj
  }
