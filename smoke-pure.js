@@ -28,7 +28,7 @@ void function () {
     buttons.appendChild (buttons.ok); buttons.appendChild (buttons.cancel)
    }
   }
-  var dialog = document.createElement ('div'); dialog.className = 'smoke-dialog-wrapper'
+  var dialog = document.createElement ('div'); dialog.className = 'smoke-dialog_wrapper'
   var dialog_inner = document.createElement ('div'); dialog_inner.className = 'smoke-dialog'
   var text_div = document.createElement ('div'); text_div.innerHTML = text
   obj.appendChild (dialog)
