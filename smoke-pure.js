@@ -28,7 +28,6 @@ void function () {
     buttons.appendChild (buttons.ok); buttons.appendChild (buttons.cancel)
    }
   }
-  var background_div = document.createElement ('div'); background_div.className = 'smokebg'
   var dialog = document.createElement ('div'); dialog.className = 'dialog smoke'
   var dialog_inner = document.createElement ('div'); dialog_inner.className = 'dialog-inner'
   var text_div = document.createElement ('div'); text_div.innerHTML = text
