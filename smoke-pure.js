@@ -8,7 +8,7 @@ void function () {
   var ok        = (typeof params.ok        != "undefined") ? (params.ok)        : "OK"
   var cancel    = (typeof params.cancel    != "undefined") ? (params.cancel)    : "Cancel"
   var className = (typeof params.className != "undefined") ? (params.className) : ""
-  var parent    = (typeof params.parent    != "undefined") ? (params.parent)    : document.body
+  var parent    = (typeof params.parent    != "undefined") ? (params.parent)    : smoke.parent || document.body
   
   if (params.type == 'prompt') {
    var prompt = obj.prompt = document.createElement ('div'); prompt.className = 'smoke-prompt'
