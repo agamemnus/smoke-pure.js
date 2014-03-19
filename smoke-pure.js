@@ -40,7 +40,7 @@ void function () {
   if  (params.type == 'alert')                                 {obj.addEventListener (smoke.point_event, function (evt) {if (evt.currentTarget != evt.target) return; obj.parentNode.removeChild (obj); params.callback ()     })}
   if ((params.type == 'prompt') || (params.type == 'confirm')) {obj.addEventListener (smoke.point_event, function (evt) {if (evt.currentTarget != evt.target) return; obj.parentNode.removeChild (obj); params.callback (false)})}
   document.smoke_pure_obj = obj
-  if (typeof params.callback == "undefined") params.callback = function () {}
+  if (typeof params.callback != "function") params.callback = function () {}
   obj.params = params
   smoke['finishbuilding_' + params.type] (obj, params)
   
@@ -50,8 +50,7 @@ void function () {
  }
  
  smoke.finishbuilding_alert   = function (obj) {
-  obj.callback_ok = function () {
-  obj.params.callback ()}
+  obj.callback_ok = function () {obj.params.callback ()}
   obj.destroy_listeners = function () {delete (document.smoke_pure_obj); document.removeEventListener ('keyup', ok_function)}
   document.addEventListener       ('keyup', ok_function)
   obj.buttons.ok.addEventListener (smoke.point_event, ok_function)
