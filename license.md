@@ -1,4 +1,4 @@
-(JS portions only)
+(All except "smoke-old.css")
 
 The MIT License (MIT)
 
