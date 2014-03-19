@@ -8,4 +8,4 @@ I removed some features. Might add them in later in a different way. Features re
 * No IE8 compatibility -- gives more of a reason to force people to upgrade.
 * reverseButtons was changed to reverse_buttons... is reversebuttons better? I'm not sure.
 
-The CSS is the same, and copied here for convenience. I only claim the JS file as my own. Thus, there are two MIT licenses, separately for the JS and CSS.
+The CSS is the same, and copied here for convenience as smoke-old.css.
