@@ -2,6 +2,7 @@ void function () {
  var smoke = {}
  smoke.point_event = 'click'
  smoke.zindex = 10000
+ smoke.autofocus = true
  
  smoke.build = function (text, params) {
   var obj = document.createElement('div'); obj.className = 'smoke-base'; obj.style.zIndex = smoke.zindex
@@ -37,15 +38,28 @@ void function () {
   if (typeof prompt != "undefined") dialog_inner.appendChild (prompt)
   dialog_inner.appendChild (buttons)
   
-  if  (params.type == 'alert')                                 {obj.addEventListener (smoke.point_event, function (evt) {if (evt.currentTarget != evt.target) return; obj.parentNode.removeChild (obj); params.callback ()     })}
-  if ((params.type == 'prompt') || (params.type == 'confirm')) {obj.addEventListener (smoke.point_event, function (evt) {if (evt.currentTarget != evt.target) return; obj.parentNode.removeChild (obj); params.callback (false)})}
+  if  (params.type == 'alert') {
+   obj.addEventListener (smoke.point_event, function (evt) {
+   if (evt.currentTarget != evt.target) return
+   obj.parentNode.removeChild (obj)
+   params.callback ()
+   })
+  }
+  if ((params.type == 'prompt') || (params.type == 'confirm')) {
+   obj.addEventListener (smoke.point_event, function (evt) {
+    if (evt.currentTarget != evt.target) return
+    obj.parentNode.removeChild (obj)
+    params.callback (false)
+   })
+  }
+  
   document.smoke_pure_obj = obj
   if (typeof params.callback != "function") params.callback = function () {}
   obj.params = params
   smoke['finishbuilding_' + params.type] (obj, params)
   
   parent.appendChild (obj)
-  if (typeof obj.prompt != "undefined") obj.prompt.input.focus ()
+  if ((typeof obj.prompt != "undefined") && (smoke.autofocus != false)) obj.prompt.input.focus ()
   return obj
  }
  
@@ -89,14 +103,14 @@ void function () {
  
  function ok_function (evt) {
   var obj = evt.currentTarget.smoke_pure_obj
-  if (((typeof evt.keyCode != "undefined") && (evt.keyCode != 0)) && (evt.keyCode != 13)) return
+  if (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 13))) return
   obj.destroy_listeners ()
   obj.parentNode.removeChild (obj)
   obj.callback_ok ()
  }
  function cancel_function (evt) {
   var obj = evt.currentTarget.smoke_pure_obj
-  if (((typeof evt.keyCode != "undefined") && (evt.keyCode != 0)) && (evt.keyCode != 27)) return
+  if (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 27))) return
   obj.destroy_listeners ()
   obj.parentNode.removeChild (obj)
   obj.callback_cancel ()
