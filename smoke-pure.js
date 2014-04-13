@@ -1,8 +1,8 @@
 void function () {
  var smoke = {}
  smoke.point_event = 'click'
- smoke.zindex = 10000
- smoke.autofocus = true
+ smoke.zindex      = 10000
+ smoke.autofocus   = true
  
  smoke.build = function (text, params) {
   var obj = document.createElement('div'); obj.className = 'smoke-base'; obj.style.zIndex = smoke.zindex
@@ -31,7 +31,8 @@ void function () {
   }
   var dialog = document.createElement ('div'); dialog.className = 'smoke-dialog_wrapper'
   var dialog_inner = document.createElement ('div'); dialog_inner.className = 'smoke-dialog'
-  var text_div = document.createElement ('div'); text_div.innerHTML = text
+  var text_div = document.createElement ('div'); text_div.className = 'smoke-dialog-text'
+  text_div.innerHTML = text
   obj.appendChild (dialog)
   dialog.appendChild (dialog_inner)
   dialog_inner.appendChild (text_div)
@@ -40,6 +41,7 @@ void function () {
   
   if  (params.type == 'alert') {
    obj.addEventListener (smoke.point_event, function (evt) {
+   if (typeof evt.changedTouches != "undefined") evt = evt.changedTouches[0]
    if (evt.currentTarget != evt.target) return
    obj.parentNode.removeChild (obj)
    params.callback ()
@@ -47,6 +49,7 @@ void function () {
   }
   if ((params.type == 'prompt') || (params.type == 'confirm')) {
    obj.addEventListener (smoke.point_event, function (evt) {
+    if (typeof evt.changedTouches != "undefined") evt = evt.changedTouches[0]
     if (evt.currentTarget != evt.target) return
     obj.parentNode.removeChild (obj)
     params.callback (false)
@@ -102,6 +105,7 @@ void function () {
  }
  
  function ok_function (evt) {
+  //if (typeof evt.changedTouches != "undefined") evt = evt.changedTouches[0]
   var obj = evt.currentTarget.smoke_pure_obj
   if (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 13))) return
   obj.destroy_listeners ()
@@ -109,6 +113,7 @@ void function () {
   obj.callback_ok ()
  }
  function cancel_function (evt) {
+  //if (typeof evt.changedTouches != "undefined") evt = evt.changedTouches[0]
   var obj = evt.currentTarget.smoke_pure_obj
   if (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 27))) return
   obj.destroy_listeners ()
