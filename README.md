@@ -9,8 +9,8 @@ I removed some features. Might add them in later in a different way. Features re
 * reverseButtons was changed to reverse_buttons... is reversebuttons better? I'm not sure.
 
 
- How to Use
--------------
+How to Use
+-----------
 
 var alert_div = smoke.alert ("Hey there!", callback, options)
 
