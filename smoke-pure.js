@@ -1,67 +1,80 @@
 void function () {
  var smoke = {}
+ 
+ // Self-explanatory:
  smoke.point_event = 'click'
  smoke.zindex      = 10000
  smoke.autofocus   = true
+ smoke.autoexit    = true
+ smoke.css_prefix  = "smoke"
+ 
+ // Structure:
+ // return value        = document.smoke_pure_obj | smoke-base
+ //  .dialog_wrapper                              |  smoke-dialog_wrapper
+ //   .dialog                                     |   smoke-dialog
+ //    .text            = .dialog.text            |    smoke-dialog-text
+ //    .prompt          = .dialog.prompt          |    smoke-dialog-prompt
+ //     .prompt.input   = .dialog.prompt.input    |     smoke-dialog-prompt-input
+ //    .buttons         = .dialog.buttons         |    smoke-dialog-buttons
+ //     .buttons.ok     = .dialog.buttons.ok      |     smoke-dialog-buttons-ok
+ //     .buttons.cancel = .dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
  
  smoke.build = function (text, params) {
-  var obj = document.createElement('div'); obj.className = 'smoke-base'; obj.style.zIndex = smoke.zindex
-  var ok        = (typeof params.ok        != "undefined") ? (params.ok)        : "OK"
-  var cancel    = (typeof params.cancel    != "undefined") ? (params.cancel)    : "Cancel"
-  var className = (typeof params.className != "undefined") ? (params.className) : ""
-  var parent    = smoke.parent || params.parent || document.body
+  var css_prefix = smoke.css_prefix
+  var ok         = (typeof params.ok        != "undefined") ? (params.ok)        : "Ok"
+  var cancel     = (typeof params.cancel    != "undefined") ? (params.cancel)    : "Cancel"
+  var className  = (typeof params.className != "undefined") ? (params.className) : ""
+  var parent     = smoke.parent   || params.parent   || document.body
+  var autoexit   = smoke.autoexit || params.autoexit || true
   
-  if (params.type == 'prompt') {
-   var prompt = obj.prompt = document.createElement ('div'); prompt.className = 'smoke-prompt'
-   prompt.input = document.createElement ('input'); prompt.input.type = 'text'
-   if (typeof params.value != "undefined") prompt.input.value = params.value
-   prompt.appendChild (prompt.input)
+  var obj = document.smoke_pure_obj = document.createElement('div'); obj.className = css_prefix + '-base'; obj.style.zIndex = smoke.zindex
+  parent.appendChild (obj)
+  
+  var dialog_wrapper = obj.dialog_wrapper = document.createElement ('div'); dialog_wrapper.className = css_prefix + '-dialog_wrapper'
+  obj.appendChild (dialog_wrapper)
+  
+  // Add an event listener for when the user clicks outside of the dialog, but inside the dialog wrapper.
+  // If activated, the parent smoke div removes itself and calls the callback.
+  if (autoexit) {
+   dialog_wrapper.addEventListener (smoke.point_event, function (evt) {
+    if (typeof evt.changedTouches != "undefined") evt = evt.changedTouches[0]
+    if (evt.currentTarget != evt.target) return
+    obj.parentNode.removeChild (obj)
+    params.callback (false, evt)
+   })
   }
   
-  var buttons = obj.buttons = document.createElement ('div'); buttons.className = 'smoke-dialog-buttons'
-  buttons.ok = document.createElement ('button'); buttons.ok.className = 'ok'; buttons.ok.innerHTML = ok
+  var dialog = obj.dialog = document.createElement ('div'); dialog.className = css_prefix + '-dialog'
+  dialog_wrapper.appendChild (dialog)
+  
+  var text_div = obj.text = document.createElement ('div'); text_div.className = css_prefix + '-dialog-text'
+  text_div.innerHTML = text
+  dialog.appendChild (text_div)
+  
+  if (params.type == 'prompt') {
+   var prompt = obj.prompt = obj.dialog.prompt = document.createElement ('div'); prompt.className = css_prefix + '-prompt'
+   prompt.input = document.createElement ('input'); prompt.input.type = 'text';  prompt.input.className = css_prefix + '-prompt-input'
+   if (typeof params.value != "undefined") prompt.input.value = params.value
+   prompt.appendChild (prompt.input)
+   dialog.appendChild (prompt)
+  }
+  
+  var buttons = obj.buttons = document.createElement ('div'); buttons.className = css_prefix + '-dialog-buttons'
+  buttons.ok = document.createElement ('button'); buttons.ok.className = '-dialog-buttons-ok'; buttons.ok.innerHTML = ok
   if (params.type == 'alert') buttons.appendChild (buttons.ok)
   if ((params.type == 'prompt') || (params.type == 'confirm')) {
-   buttons.cancel = document.createElement ('button'); buttons.cancel.className = 'smoke-dialog-buttons-cancel'; buttons.cancel.innerHTML = cancel
+   buttons.cancel = document.createElement ('button'); buttons.cancel.className = css_prefix + '-dialog-buttons-cancel'; buttons.cancel.innerHTML = cancel
    if (params.reverse_buttons) {
     buttons.appendChild (buttons.cancel); buttons.appendChild (buttons.ok)
    } else {
     buttons.appendChild (buttons.ok); buttons.appendChild (buttons.cancel)
    }
   }
-  var dialog = document.createElement ('div'); dialog.className = 'smoke-dialog_wrapper'
-  var dialog_inner = document.createElement ('div'); dialog_inner.className = 'smoke-dialog'
-  var text_div = document.createElement ('div'); text_div.className = 'smoke-dialog-text'
-  text_div.innerHTML = text
-  obj.appendChild (dialog)
-  dialog.appendChild (dialog_inner)
-  dialog_inner.appendChild (text_div)
-  if (typeof prompt != "undefined") dialog_inner.appendChild (prompt)
-  dialog_inner.appendChild (buttons)
+  dialog.appendChild (buttons)
   
-  if  (params.type == 'alert') {
-   obj.addEventListener (smoke.point_event, function (evt) {
-   if (typeof evt.changedTouches != "undefined") evt = evt.changedTouches[0]
-   if (evt.currentTarget != evt.target) return
-   obj.parentNode.removeChild (obj)
-   params.callback ()
-   })
-  }
-  if ((params.type == 'prompt') || (params.type == 'confirm')) {
-   obj.addEventListener (smoke.point_event, function (evt) {
-    if (typeof evt.changedTouches != "undefined") evt = evt.changedTouches[0]
-    if (evt.currentTarget != evt.target) return
-    obj.parentNode.removeChild (obj)
-    params.callback (false)
-   })
-  }
-  
-  document.smoke_pure_obj = obj
   if (typeof params.callback != "function") params.callback = function () {}
   obj.params = params
   smoke['finishbuilding_' + params.type] (obj, params)
-  
-  parent.appendChild (obj)
   if ((typeof obj.prompt != "undefined") && (smoke.autofocus != false)) obj.prompt.input.focus ()
   return obj
  }
@@ -121,11 +134,12 @@ void function () {
   obj.callback_cancel ()
  }
  
- var action_list = ['alert', 'confirm', 'prompt']
- for (var i = 0; i < action_list.length; i++) {
+ smoke.action_list = [{name : 'alert'}, {name : 'confirm'}, {name : 'prompt'}]
+ 
+ for (var i = 0; i < smoke.action_list.length; i++) {
   void function (current_action) {
    smoke[current_action] = function (text, callback, params) {return smoke.build (text, merge_objects ({callback: callback, type: current_action}, params))}
-  } (action_list[i])
+  } (smoke.action_list[i].name)
  }
  
  function merge_objects (secondary, primary) {
