@@ -16,6 +16,11 @@ The CSS is the same, and copied here for convenience as smoke-old.css.
 
 var alert_div = smoke.alert ("Hey there!", callback, options)
 
+Live example:
+
+http://agamemnus.github.io/smoke-pure.js/example.htm
+
+
 ````
  // Options:
  smoke.ok          = "Ok"          // Text for "Ok" button.
