@@ -63,7 +63,7 @@
  text-align : center;
 }
 
-.smoke-prompt input {
+.smoke-prompt-input {
  -moz-box-sizing  : border-box;
  box-sizing       : border-box;
  width            : 75%;
