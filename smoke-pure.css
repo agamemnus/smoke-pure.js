@@ -2,7 +2,7 @@
  font-family : 'rokkitt';
  font-style  : normal;
  font-weight : normal;
- src         : local('rokkitt'), url('/web_fonts/rokkitt.woff') format('woff');
+ src         : local('rokkitt'), url('rokkitt.woff') format('woff');
 }
 
 .smoke-base {
