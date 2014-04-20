@@ -5,7 +5,7 @@ void function () {
  smoke.ok          = "Ok"          // Text for "Ok" button.
  smoke.cancel      = "Cancel"      // Text for "Cancel" button.
  smoke.point_event = 'click'       // Point event ("click", "touchstart", etc.)
- smoke.parent      = document.body // Where the smoke div attaches. Note that if this is undefined (because document.body hasn't been added yet), the build function attempts to define it as document.body when the build function is run --that is, when the smoke DOM object is created.
+ smoke.parent      = document.body // Where the smoke div attaches. Note that if this is null or undefined (because document.body hasn't been added yet), the build function attempts to define it as document.body when the build function is run --that is, when the smoke DOM object is created.
  smoke.zindex      = 10000         // Z-index of the smoke DOM object. This should be a high number.
  smoke.autofocus   = true          // If true, the input is automatically focused when the smoke DOM object is created.
  smoke.autoexit    = true          // If true, clicking outside the smoke dialog (but inside the dialog_wrapper) closes/detaches the smoke DOM object and runs the callback with a parameter of (false, evt).
@@ -23,7 +23,7 @@ void function () {
  //     .buttons.cancel = .dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
  
  smoke.build = function (text, params) {
-  if (typeof smoke.parent == "undefined") smoke.parent = document.body
+  if ((typeof smoke.parent == "undefined") || (smoke.parent == null)) smoke.parent = document.body
   var ok          = (typeof params.ok          != "undefined") ? params.ok          : smoke.ok
   var cancel      = (typeof params.cancel      != "undefined") ? params.cancel      : smoke.cancel
   var point_event = (typeof params.point_event != "undefined") ? params.point_event : smoke.point_event
