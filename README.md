@@ -1,4 +1,4 @@
-moke-pure.js
+smoke-pure.js
 ===============
 
 Inspired by https://github.com/hxgf/smoke.js. I wanted to get rid of the DOM ID reliance that smoke.js had. This also fixes a bug where the actual base elements are never deleted after use, only hidden.
