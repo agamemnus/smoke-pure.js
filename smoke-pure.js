@@ -1,12 +1,15 @@
 void function () {
  var smoke = {}
  
- // Self-explanatory:
- smoke.point_event = 'click'
- smoke.zindex      = 10000
- smoke.autofocus   = true
- smoke.autoexit    = true
- smoke.css_prefix  = "smoke"
+ // Options:
+ smoke.ok          = "Ok"          // Text for "Ok" button.
+ smoke.cancel      = "Cancel"      // Text for "Cancel" button.
+ smoke.point_event = 'click'       // Point event ("click", "touchstart", etc.)
+ smoke.parent      = document.body // Where the smoke div attaches. Note that if this is undefined (because document.body hasn't been added yet), the build function attempts to define it as document.body when the build function is run --that is, when the smoke DOM object is created.
+ smoke.zindex      = 10000         // Z-index of the smoke DOM object. This should be a high number.
+ smoke.autofocus   = true          // If true, the input is automatically focused when the smoke DOM object is created.
+ smoke.autoexit    = true          // If true, clicking outside the smoke dialog (but inside the dialog_wrapper) closes/detaches the smoke DOM object and runs the callback with a parameter of (false, evt).
+ smoke.css_prefix  = "smoke"       // The CSS prefix for the classes used in the .build function.
  
  // Structure:
  // return value        = document.smoke_pure_obj | smoke-base
@@ -20,14 +23,18 @@ void function () {
  //     .buttons.cancel = .dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
  
  smoke.build = function (text, params) {
-  var css_prefix = smoke.css_prefix
-  var ok         = (typeof params.ok        != "undefined") ? (params.ok)        : "Ok"
-  var cancel     = (typeof params.cancel    != "undefined") ? (params.cancel)    : "Cancel"
-  var className  = (typeof params.className != "undefined") ? (params.className) : ""
-  var parent     = smoke.parent   || params.parent   || document.body
-  var autoexit   = smoke.autoexit || params.autoexit || true
+  if (typeof smoke.parent == "undefined") smoke.parent = document.body
+  var ok          = (typeof params.ok          != "undefined") ? params.ok          : smoke.ok
+  var cancel      = (typeof params.cancel      != "undefined") ? params.cancel      : smoke.cancel
+  var point_event = (typeof params.point_event != "undefined") ? params.point_event : smoke.point_event
+  var parent      = (typeof params.parent      != "undefined") ? params.parent      : smoke.parent
+  var zindex      = (typeof params.zindex      != "undefined") ? params.zindex      : smoke.zindex
+  var autoexit    = (typeof params.autoexit    != "undefined") ? params.autoexit    : smoke.autoexit
+  var autofocus   = (typeof params.autofocus   != "undefined") ? params.autofocus   : smoke.autofocus
+  var css_prefix  = (typeof params.css_prefix  != "undefined") ? params.css_prefix  : smoke.css_prefix
+  params.point_event = point_event
   
-  var obj = document.smoke_pure_obj = document.createElement('div'); obj.className = css_prefix + '-base'; obj.style.zIndex = smoke.zindex
+  var obj = document.smoke_pure_obj = document.createElement('div'); obj.className = css_prefix + '-base'; obj.style.zIndex = zindex
   parent.appendChild (obj)
   
   var dialog_wrapper = obj.dialog_wrapper = document.createElement ('div'); dialog_wrapper.className = css_prefix + '-dialog_wrapper'
@@ -36,7 +43,7 @@ void function () {
   // Add an event listener for when the user clicks outside of the dialog, but inside the dialog wrapper.
   // If activated, the parent smoke div removes itself and calls the callback.
   if (autoexit) {
-   dialog_wrapper.addEventListener (smoke.point_event, function (evt) {
+   dialog_wrapper.addEventListener (point_event, function (evt) {
     if (typeof evt.changedTouches != "undefined") evt = evt.changedTouches[0]
     if (evt.currentTarget != evt.target) return
     obj.parentNode.removeChild (obj)
@@ -75,7 +82,7 @@ void function () {
   if (typeof params.callback != "function") params.callback = function () {}
   obj.params = params
   smoke['finishbuilding_' + params.type] (obj, params)
-  if ((typeof obj.prompt != "undefined") && (smoke.autofocus != false)) obj.prompt.input.focus ()
+  if ((typeof obj.prompt != "undefined") && (autofocus != false)) obj.prompt.input.focus ()
   return obj
  }
  
@@ -83,7 +90,7 @@ void function () {
   obj.callback_ok = function () {obj.params.callback ()}
   obj.destroy_listeners = function () {delete (document.smoke_pure_obj); document.removeEventListener ('keyup', ok_function)}
   document.addEventListener       ('keyup', ok_function)
-  obj.buttons.ok.addEventListener (smoke.point_event, ok_function)
+  obj.buttons.ok.addEventListener (obj.params.point_event, ok_function)
   obj.buttons.ok.smoke_pure_obj = obj
  }
  smoke.finishbuilding_confirm = function (obj) {
@@ -95,9 +102,9 @@ void function () {
    document.removeEventListener ('keyup', cancel_function)
   }
   document.addEventListener           ('keyup', ok_function)
-  obj.buttons.ok.addEventListener     (smoke.point_event, ok_function)
+  obj.buttons.ok.addEventListener     (obj.params.point_event, ok_function)
   document.addEventListener           ('keyup', cancel_function)
-  obj.buttons.cancel.addEventListener (smoke.point_event, cancel_function)
+  obj.buttons.cancel.addEventListener (obj.params.point_event, cancel_function)
   obj.buttons.ok.smoke_pure_obj     = obj
   obj.buttons.cancel.smoke_pure_obj = obj
  }
@@ -110,9 +117,9 @@ void function () {
    document.removeEventListener ('keyup', cancel_function)
   }
   document.addEventListener           ('keyup', ok_function)
-  obj.buttons.ok.addEventListener     (smoke.point_event, ok_function)
+  obj.buttons.ok.addEventListener     (obj.params.point_event, ok_function)
   document.addEventListener           ('keyup', cancel_function)
-  obj.buttons.cancel.addEventListener (smoke.point_event, cancel_function)
+  obj.buttons.cancel.addEventListener (obj.params.point_event, cancel_function)
   obj.buttons.ok.smoke_pure_obj     = obj
   obj.buttons.cancel.smoke_pure_obj = obj
  }
