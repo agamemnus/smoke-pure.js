@@ -1,3 +1,7 @@
+// smoke-pure.js
+// (c) 2013-2014 Michael Romanovsky ("Agamemnus" on github).
+// Released under the MIT license.
+
 void function () {
  var smoke = {}
  
