@@ -1,19 +1,18 @@
-// smoke-pure.js
-// (c) 2013-2014 Michael Romanovsky ("Agamemnus" on github).
-// Released under the MIT license.
+// Smoke-pure.js: (c) 2013-2014 Michael Romanovsky, or "Agamemnus" on Github. Released under the MIT license.
 
 void function () {
  var smoke = {}
  
  // Options:
- smoke.ok          = "Ok"          // Text for "Ok" button.
- smoke.cancel      = "Cancel"      // Text for "Cancel" button.
- smoke.point_event = 'click'       // Point event ("click", "touchstart", etc.)
- smoke.parent      = document.body // Where the smoke div attaches. Note that if this is null or undefined (because document.body hasn't been added yet), the build function attempts to define it as document.body when the build function is run --that is, when the smoke DOM object is created.
- smoke.zindex      = 10000         // Z-index of the smoke DOM object. This should be a high number.
- smoke.autofocus   = true          // If true, the input is automatically focused when the smoke DOM object is created.
- smoke.autoexit    = true          // If true, clicking outside the smoke dialog (but inside the dialog_wrapper) closes/detaches the smoke DOM object and runs the callback with a parameter of (false, evt).
- smoke.css_prefix  = "smoke"       // The CSS prefix for the classes used in the .build function.
+ smoke.ok              = "Ok"          // Text for "Ok" button.
+ smoke.cancel          = "Cancel"      // Text for "Cancel" button.
+ smoke.point_event     = 'click'       // Point event ("click", "touchstart", etc.)
+ smoke.parent          = document.body // Where the smoke div attaches. Note that if this is undefined (because document.body hasn't been added yet), the build function attempts to define it as document.body when the build function is run --that is, when the smoke DOM object is created.
+ smoke.zindex          = 10000         // Z-index of the smoke DOM object. This should be a high number.
+ smoke.reverse_buttons = false         // If false, the "Ok" button appears before (left of) the "Cancel" button. If true, the "Cancel" button appears before the "Ok" button.
+ smoke.autofocus       = true          // If true, the input is automatically focused when the smoke DOM object is created.
+ smoke.autoexit        = true          // If true, clicking outside the smoke dialog (but inside the dialog_wrapper) closes/detaches the smoke DOM object and runs the callback with a parameter of (false, evt).
+ smoke.css_prefix      = "smoke"       // The CSS prefix for the classes used in the .build function.
  
  // Structure:
  // return value        = document.smoke_pure_obj | smoke-base
@@ -28,14 +27,15 @@ void function () {
  
  smoke.build = function (text, params) {
   if ((typeof smoke.parent == "undefined") || (smoke.parent == null)) smoke.parent = document.body
-  var ok          = (typeof params.ok          != "undefined") ? params.ok          : smoke.ok
-  var cancel      = (typeof params.cancel      != "undefined") ? params.cancel      : smoke.cancel
-  var point_event = (typeof params.point_event != "undefined") ? params.point_event : smoke.point_event
-  var parent      = (typeof params.parent      != "undefined") ? params.parent      : smoke.parent
-  var zindex      = (typeof params.zindex      != "undefined") ? params.zindex      : smoke.zindex
-  var autoexit    = (typeof params.autoexit    != "undefined") ? params.autoexit    : smoke.autoexit
-  var autofocus   = (typeof params.autofocus   != "undefined") ? params.autofocus   : smoke.autofocus
-  var css_prefix  = (typeof params.css_prefix  != "undefined") ? params.css_prefix  : smoke.css_prefix
+  var ok              = (typeof params.ok              != "undefined") ? params.ok              : smoke.ok
+  var cancel          = (typeof params.cancel          != "undefined") ? params.cancel          : smoke.cancel
+  var point_event     = (typeof params.point_event     != "undefined") ? params.point_event     : smoke.point_event
+  var parent          = (typeof params.parent          != "undefined") ? params.parent          : smoke.parent
+  var zindex          = (typeof params.zindex          != "undefined") ? params.zindex          : smoke.zindex
+  var reverse_buttons = (typeof params.reverse_buttons != "undefined") ? params.reverse_buttons : smoke.reverse_buttons
+  var autoexit        = (typeof params.autoexit        != "undefined") ? params.autoexit        : smoke.autoexit
+  var autofocus       = (typeof params.autofocus       != "undefined") ? params.autofocus       : smoke.autofocus
+  var css_prefix      = (typeof params.css_prefix      != "undefined") ? params.css_prefix      : smoke.css_prefix
   params.point_event = point_event
   
   var obj = document.smoke_pure_obj = document.createElement('div'); obj.className = css_prefix + '-base'; obj.style.zIndex = zindex
