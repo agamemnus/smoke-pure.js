@@ -172,11 +172,11 @@ function getKeyCodeString (evt) {
  } 
 }
 
- if ((typeof define === "function") && (define.amd)) {
-  define (smoke)
- } else if (typeof exports === 'object') {
+ if (typeof module != 'undefined' && module.exports) {
   module.exports = smoke
+ } else if (typeof define === 'function' && define.amd) {
+  define ('smoke', [], function() {return smoke})
  } else {
-  this.smoke = smoke
+ this.smoke = smoke
  }
 } ()
