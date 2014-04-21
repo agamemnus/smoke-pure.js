@@ -15,15 +15,15 @@ void function () {
  smoke.css_prefix      = "smoke"       // The CSS prefix for the classes used in the .build function.
  
  // Structure:
- // return value        = document.smoke_pure_obj | smoke-base
- //  .dialog_wrapper                              |  smoke-dialog_wrapper
- //   .dialog                                     |   smoke-dialog
- //    .text            = .dialog.text            |    smoke-dialog-text
- //    .prompt          = .dialog.prompt          |    smoke-dialog-prompt
- //     .prompt.input   = .dialog.prompt.input    |     smoke-dialog-prompt-input
- //    .buttons         = .dialog.buttons         |    smoke-dialog-buttons
- //     .buttons.ok     = .dialog.buttons.ok      |     smoke-dialog-buttons-ok
- //     .buttons.cancel = .dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
+ // var obj (return value) = document.smoke_pure_obj | smoke-base
+ //  obj.dialog_wrapper                              |  smoke-dialog_wrapper
+ //   obj.dialog                                     |   smoke-dialog
+ //    obj.text            = .dialog.text            |    smoke-dialog-text
+ //    obj.prompt          = .dialog.prompt          |    smoke-dialog-prompt
+ //     obj.prompt.input   = .dialog.prompt.input    |     smoke-dialog-prompt-input
+ //    obj.buttons         = .dialog.buttons         |    smoke-dialog-buttons
+ //     obj.buttons.ok     = .dialog.buttons.ok      |     smoke-dialog-buttons-ok
+ //     obj.buttons.cancel = .dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
  
  smoke.build = function (text, params) {
   if ((typeof smoke.parent == "undefined") || (smoke.parent == null)) smoke.parent = document.body
