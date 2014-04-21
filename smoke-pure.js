@@ -162,16 +162,6 @@ void function () {
   return new_object
  }
  
- 
-function getKeyCodeString (evt) {
- var keyCode = evt.keyCode
- switch (keyCode) {
-  case  27 : return "escape"
-  case  13 : return "enter"
-  default  : return String.fromCharCode(keyCode).toUpperCase()
- } 
-}
-
  if (typeof module != 'undefined' && module.exports) {
   module.exports = smoke
  } else if (typeof define === 'function' && define.amd) {
