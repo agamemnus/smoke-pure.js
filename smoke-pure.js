@@ -177,6 +177,6 @@ function getKeyCodeString (evt) {
  } else if (typeof define === 'function' && define.amd) {
   define ('smoke', [], function() {return smoke})
  } else {
- this.smoke = smoke
+  this.smoke = smoke
  }
 } ()
