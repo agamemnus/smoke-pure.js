@@ -129,7 +129,6 @@ void function () {
  }
  
  function ok_function (evt) {
-  //if (typeof evt.changedTouches != "undefined") evt = evt.changedTouches[0]
   var obj = evt.currentTarget.smoke_pure_obj
   if (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 13))) return
   obj.destroy_listeners ()
@@ -137,7 +136,6 @@ void function () {
   obj.callback_ok ()
  }
  function cancel_function (evt) {
-  //if (typeof evt.changedTouches != "undefined") evt = evt.changedTouches[0]
   var obj = evt.currentTarget.smoke_pure_obj
   if (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 27))) return
   obj.destroy_listeners ()
