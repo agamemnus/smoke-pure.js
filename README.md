@@ -32,6 +32,8 @@ http://agamemnus.github.io/smoke-pure.js/example.htm
  smoke.autofocus       = true          // If true, the input is automatically focused when the smoke DOM object is created.
  smoke.autoexit        = true          // If true, clicking outside the smoke dialog (but inside the dialog_wrapper) closes/detaches the smoke DOM object and runs the callback with a parameter of (false, evt).
  smoke.css_prefix      = "smoke"       // The CSS prefix for the classes used in the .build function.
+ // params.callback                    // Function to run after user input is sent.
+ // params.value                       // The initial value to set the prompt input text to.
  
  // Structure:
  // var obj (return value) = document.smoke_pure_obj | smoke-base
