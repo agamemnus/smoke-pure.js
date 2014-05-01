@@ -13,8 +13,8 @@ void function () {
  smoke.autofocus       = true          // If true, the input is automatically focused when the smoke DOM object is created.
  smoke.autoexit        = true          // If true, clicking outside the smoke dialog (but inside the dialog_wrapper) closes/detaches the smoke DOM object and runs the callback with a parameter of (false, evt).
  smoke.css_prefix      = "smoke"       // The CSS prefix for the classes used in the .build function.
- // params.callback                    // Function to run after user input is sent.
- // params.value                       // The initial value to set the prompt input text to.
+ smoke.value           = undefined     // The initial value to set the prompt input text to.
+ smoke.callback        = undefined     // Function to run after user input is sent.
  
  // Structure:
  // var obj (return value) = document.smoke_pure_obj | smoke-base
@@ -29,16 +29,19 @@ void function () {
  
  smoke.build = function (text, params) {
   if ((typeof smoke.parent == "undefined") || (smoke.parent == null)) smoke.parent = document.body
-  var ok              = (typeof params.ok              != "undefined") ? params.ok              : smoke.ok
-  var cancel          = (typeof params.cancel          != "undefined") ? params.cancel          : smoke.cancel
-  var point_event     = (typeof params.point_event     != "undefined") ? params.point_event     : smoke.point_event
-  var parent          = (typeof params.parent          != "undefined") ? params.parent          : smoke.parent
-  var zindex          = (typeof params.zindex          != "undefined") ? params.zindex          : smoke.zindex
-  var reverse_buttons = (typeof params.reverse_buttons != "undefined") ? params.reverse_buttons : smoke.reverse_buttons
-  var autoexit        = (typeof params.autoexit        != "undefined") ? params.autoexit        : smoke.autoexit
-  var autofocus       = (typeof params.autofocus       != "undefined") ? params.autofocus       : smoke.autofocus
-  var css_prefix      = (typeof params.css_prefix      != "undefined") ? params.css_prefix      : smoke.css_prefix
-  params.point_event = point_event
+  var ok                  = (typeof params.ok              != "undefined") ? params.ok              : smoke.ok
+  var cancel              = (typeof params.cancel          != "undefined") ? params.cancel          : smoke.cancel
+  var point_event         = (typeof params.point_event     != "undefined") ? params.point_event     : smoke.point_event
+  var parent              = (typeof params.parent          != "undefined") ? params.parent          : smoke.parent
+  var zindex              = (typeof params.zindex          != "undefined") ? params.zindex          : smoke.zindex
+  var reverse_buttons     = (typeof params.reverse_buttons != "undefined") ? params.reverse_buttons : smoke.reverse_buttons
+  var autoexit            = (typeof params.autoexit        != "undefined") ? params.autoexit        : smoke.autoexit
+  var autofocus           = (typeof params.autofocus       != "undefined") ? params.autofocus       : smoke.autofocus
+  var css_prefix          = (typeof params.css_prefix      != "undefined") ? params.css_prefix      : smoke.css_prefix
+  var input_default_value = (typeof params.value           != "undefined") ? params.value           : smoke.value
+  var callback            = (typeof params.callback        != "undefined") ? params.callback        : smoke.callback
+  params.point_event      = point_event
+  params.callback         = callback
   
   var obj = document.smoke_pure_obj = document.createElement('div'); obj.className = css_prefix + '-base'; obj.style.zIndex = zindex
   parent.appendChild (obj)
@@ -67,7 +70,7 @@ void function () {
   if (params.type == 'prompt') {
    var prompt = obj.prompt = obj.dialog.prompt = document.createElement ('div'); prompt.className = css_prefix + '-prompt'
    prompt.input = document.createElement ('input'); prompt.input.type = 'text';  prompt.input.className = css_prefix + '-prompt-input'
-   if (typeof params.value != "undefined") prompt.input.value = params.value
+   if (typeof input_default_value != "undefined") prompt.input.value = input_default_value
    prompt.appendChild (prompt.input)
    dialog.appendChild (prompt)
   }
