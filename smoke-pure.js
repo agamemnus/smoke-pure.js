@@ -17,15 +17,15 @@ void function () {
  smoke.callback        = undefined     // Function to run after user input is sent.
  
  // Structure:
- // var obj (return value) = document.smoke_pure_obj | smoke-base
- //  obj.dialog_wrapper                              |  smoke-dialog_wrapper
- //   obj.dialog                                     |   smoke-dialog
- //    obj.text            = .dialog.text            |    smoke-dialog-text
- //    obj.prompt          = .dialog.prompt          |    smoke-dialog-prompt
- //     obj.prompt.input   = .dialog.prompt.input    |     smoke-dialog-prompt-input
- //    obj.buttons         = .dialog.buttons         |    smoke-dialog-buttons
- //     obj.buttons.ok     = .dialog.buttons.ok      |     smoke-dialog-buttons-ok
- //     obj.buttons.cancel = .dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
+ // var obj (return value) = document.smoke_pure_obj    | smoke-base
+ //  obj.dialog_wrapper                                 |  smoke-dialog_wrapper
+ //   obj.dialog                                        |   smoke-dialog
+ //    obj.text            = obj.dialog.text            |    smoke-dialog-text
+ //    obj.prompt          = obj.dialog.prompt          |    smoke-dialog-prompt
+ //     obj.prompt.input   = obj.dialog.prompt.input    |     smoke-dialog-prompt-input
+ //    obj.buttons         = obj.dialog.buttons         |    smoke-dialog-buttons
+ //     obj.buttons.ok     = obj.dialog.buttons.ok      |     smoke-dialog-buttons-ok
+ //     obj.buttons.cancel = obj.dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
  
  smoke.build = function (text, params) {
   if ((typeof smoke.parent == "undefined") || (smoke.parent == null)) smoke.parent = document.body
@@ -63,7 +63,7 @@ void function () {
   var dialog = obj.dialog = document.createElement ('div'); dialog.className = css_prefix + '-dialog'
   dialog_wrapper.appendChild (dialog)
   
-  var text_div = obj.text = document.createElement ('div'); text_div.className = css_prefix + '-dialog-text'
+  var text_div = obj.text = obj.dialog.text = document.createElement ('div'); text_div.className = css_prefix + '-dialog-text'
   text_div.innerHTML = text
   dialog.appendChild (text_div)
   
@@ -75,7 +75,7 @@ void function () {
    dialog.appendChild (prompt)
   }
   
-  var buttons = obj.buttons = document.createElement ('div'); buttons.className = css_prefix + '-dialog-buttons'
+  var buttons = obj.buttons = obj.dialog.buttons = document.createElement ('div'); buttons.className = css_prefix + '-dialog-buttons'
   buttons.ok = document.createElement ('button'); buttons.ok.className = '-dialog-buttons-ok'; buttons.ok.innerHTML = ok
   if (params.type == 'alert') buttons.appendChild (buttons.ok)
   if ((params.type == 'prompt') || (params.type == 'confirm')) {
