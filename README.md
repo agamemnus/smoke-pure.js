@@ -36,13 +36,13 @@ http://agamemnus.github.io/smoke-pure.js/example.htm
  smoke.callback        = undefined     // Function to run after user input is sent.
  
  // Structure:
- // var obj (return value) = document.smoke_pure_obj | smoke-base
- //  obj.dialog_wrapper                              |  smoke-dialog_wrapper
- //   obj.dialog                                     |   smoke-dialog
- //    obj.text            = .dialog.text            |    smoke-dialog-text
- //    obj.prompt          = .dialog.prompt          |    smoke-dialog-prompt
- //     obj.prompt.input   = .dialog.prompt.input    |     smoke-dialog-prompt-input
- //    obj.buttons         = .dialog.buttons         |    smoke-dialog-buttons
- //     obj.buttons.ok     = .dialog.buttons.ok      |     smoke-dialog-buttons-ok
- //     obj.buttons.cancel = .dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
+ // var obj (return value) = document.smoke_pure_obj    | smoke-base
+ //  obj.dialog_wrapper                                 |  smoke-dialog_wrapper
+ //   obj.dialog                                        |   smoke-dialog
+ //    obj.text            = obj.dialog.text            |    smoke-dialog-text
+ //    obj.prompt          = obj.dialog.prompt          |    smoke-dialog-prompt
+ //     obj.prompt.input   = obj.dialog.prompt.input    |     smoke-dialog-prompt-input
+ //    obj.buttons         = obj.dialog.buttons         |    smoke-dialog-buttons
+ //     obj.buttons.ok     = obj.dialog.buttons.ok      |     smoke-dialog-buttons-ok
+ //     obj.buttons.cancel = obj.dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
 ````
