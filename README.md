@@ -11,6 +11,16 @@ I removed some features. Might add them in later in a different way. Features re
 "Less smoke, more health."
 
 
+Added 8/10/2014:
+-----------
+The custom css attribute lets you add classnames to anything in the modal's structure.
+````
+smoke.custom_css = {"button.ok": "my_ok_button_style"}
+// OR
+smoke.custom_css = {"buttons.ok": ["my_ok_button_style1", "my_ok_button_style2"]}
+````
+
+
 How to Use
 -----------
 
