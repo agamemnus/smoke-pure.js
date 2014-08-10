@@ -12,6 +12,7 @@ void function () {
  smoke.reverse_buttons = false         // If false, the "Ok" button appears before (left of) the "Cancel" button. If true, the "Cancel" button appears before the "Ok" button.
  smoke.autofocus       = true          // If true, the input is automatically focused when the smoke DOM object is created.
  smoke.autoexit        = true          // If true, clicking outside the smoke dialog (but inside the dialog_wrapper) closes/detaches the smoke DOM object and runs the callback with a parameter of (false, evt).
+ smoke.custom_css      = {}            // Custom classes for each object in the structure. E.G.: smoke.custom_css = {"button.ok": "my_ok_button_style"} or smoke.css = {"buttons.ok": ["my_ok_button_style1", "my_ok_button_style2"]}
  smoke.css_prefix      = "smoke"       // The CSS prefix for the classes used in the .build function.
  smoke.value           = undefined     // The initial value to set the prompt input text to.
  smoke.callback        = undefined     // Function to run after user input is sent.
@@ -37,6 +38,7 @@ void function () {
   var reverse_buttons     = (typeof params.reverse_buttons != "undefined") ? params.reverse_buttons : smoke.reverse_buttons
   var autoexit            = (typeof params.autoexit        != "undefined") ? params.autoexit        : smoke.autoexit
   var autofocus           = (typeof params.autofocus       != "undefined") ? params.autofocus       : smoke.autofocus
+  var custom_css          = (typeof params.custom_css      != "undefined") ? params.custom_css      : smoke.custom_css
   var css_prefix          = (typeof params.css_prefix      != "undefined") ? params.css_prefix      : smoke.css_prefix
   var input_default_value = (typeof params.value           != "undefined") ? params.value           : smoke.value
   var callback            = (typeof params.callback        != "undefined") ? params.callback        : smoke.callback
@@ -76,7 +78,7 @@ void function () {
   }
   
   var buttons = obj.buttons = obj.dialog.buttons = document.createElement ('div'); buttons.className = css_prefix + '-dialog-buttons'
-  buttons.ok = document.createElement ('button'); buttons.ok.className = '-dialog-buttons-ok'; buttons.ok.innerHTML = ok
+  buttons.ok = document.createElement ('button'); buttons.ok.className = css_prefix + '-dialog-buttons-ok'; buttons.ok.innerHTML = ok
   if (params.type == 'alert') buttons.appendChild (buttons.ok)
   if ((params.type == 'prompt') || (params.type == 'confirm')) {
    buttons.cancel = document.createElement ('button'); buttons.cancel.className = css_prefix + '-dialog-buttons-cancel'; buttons.cancel.innerHTML = cancel
@@ -87,6 +89,16 @@ void function () {
    }
   }
   dialog.appendChild (buttons)
+  
+  // Append any extra CSS styles on any part of the structure.
+  for (var current_structure_name in custom_css) {
+   var property_array = current_structure_name.split (".")
+   var current_element = obj
+   property_array.forEach (function (current_property) {current_element = current_element[current_property]})
+   var current_class_list = custom_css[current_structure_name]
+   if (typeof current_class_list == "string") current_class_list = [current_class_list]
+   current_class_list.forEach (function (current_classname) {current_element.classList.add (current_classname)})
+  }
   
   if (typeof params.callback != "function") params.callback = function () {}
   obj.params = params
