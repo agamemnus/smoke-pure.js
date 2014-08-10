@@ -47,3 +47,7 @@ http://agamemnus.github.io/smoke-pure.js/example.htm
  //     obj.buttons.ok     = obj.dialog.buttons.ok      |     smoke-dialog-buttons-ok
  //     obj.buttons.cancel = obj.dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
 ````
+
+Money?
+-----------
+No problem. I'll take it. https://www.gittip.com/agamemnus/
