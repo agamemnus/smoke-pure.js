@@ -31,6 +31,7 @@ http://agamemnus.github.io/smoke-pure.js/example.htm
  smoke.reverse_buttons = false         // If false, the "Ok" button appears before (left of) the "Cancel" button. If true, the "Cancel" button appears before the "Ok" button.
  smoke.autofocus       = true          // If true, the input is automatically focused when the smoke DOM object is created.
  smoke.autoexit        = true          // If true, clicking outside the smoke dialog (but inside the dialog_wrapper) closes/detaches the smoke DOM object and runs the callback with a parameter of (false, evt).
+ smoke.custom_css = {} // Custom classes for each object in the structure. E.G.: smoke.custom_css = {"button.ok": "my_ok_button_style"} or smoke.css = {"buttons.ok": ["my_ok_button_style1", "my_ok_button_style2"]}
  smoke.css_prefix      = "smoke"       // The CSS prefix for the classes used in the .build function.
  smoke.value           = undefined     // The initial value to set the prompt input text to.
  smoke.callback        = undefined     // Function to run after user input is sent.
