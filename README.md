@@ -11,7 +11,13 @@ I removed some features. Might add them in later in a different way. Features re
 "Less smoke, more health."
 
 
-Added 8/10/2014:
+Changed 9/02/2014:
+-----------
+Removed the document.smoke_pure_obj object in favor of wrapping the "cancel" and "ok" functions with the current object.
+Added a mutation observer, which will activate the "destroy_listeners" function if the modal is removed from the DOM by some means outside the function. This can be turned off via a new option called "observe_mutation".
+
+
+Changed 8/10/2014:
 -----------
 The custom css attribute lets you add classnames to anything in the modal's structure.
 ````
