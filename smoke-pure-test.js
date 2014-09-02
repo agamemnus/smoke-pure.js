@@ -131,9 +131,10 @@ void function () {
  
  smoke.finishbuilding_alert   = function (obj) {
   obj.callback_ok = function () {obj.params.callback ()}
-  obj.destroy_listeners = function (observer) {if (observer) observer.disconnect (); document.removeEventListener ('keyup', ok_function)}
-  document.addEventListener       ('keyup', ok_function)
-  obj.buttons.ok.addEventListener (obj.params.point_event, ok_function)
+  obj.destroy_listeners = function (observer) {if (observer) observer.disconnect (); document.removeEventListener ('keyup', ok_function_wrapper)}
+  var ok_function_wrapper = function (evt) {ok_function(evt, obj)}
+  document.addEventListener       ('keyup', ok_function_wrapper)
+  obj.buttons.ok.addEventListener (obj.params.point_event, ok_function_wrapper)
   obj.buttons.ok.smoke_pure_obj = obj
  }
  smoke.finishbuilding_confirm = function (obj) {
@@ -141,13 +142,15 @@ void function () {
   obj.callback_cancel = function () {obj.params.callback (false)}
   obj.destroy_listeners = function (observer) {
    if (observer) observer.disconnect ()
-   document.removeEventListener ('keyup', ok_function)
-   document.removeEventListener ('keyup', cancel_function)
+   document.removeEventListener ('keyup', ok_function_wrapper)
+   document.removeEventListener ('keyup', cancel_function_wrapper)
   }
-  document.addEventListener           ('keyup', ok_function)
-  obj.buttons.ok.addEventListener     (obj.params.point_event, ok_function)
-  document.addEventListener           ('keyup', cancel_function)
-  obj.buttons.cancel.addEventListener (obj.params.point_event, cancel_function)
+  var ok_function_wrapper     = function (evt) {ok_function    (evt, obj)}
+  var cancel_function_wrapper = function (evt) {cancel_function(evt, obj)}
+  document.addEventListener           ('keyup', ok_function_wrapper)
+  obj.buttons.ok.addEventListener     (obj.params.point_event, ok_function_wrapper)
+  document.addEventListener           ('keyup', cancel_function_wrapper)
+  obj.buttons.cancel.addEventListener (obj.params.point_event, cancel_function_wrapper)
   obj.buttons.ok.smoke_pure_obj     = obj
   obj.buttons.cancel.smoke_pure_obj = obj
  }
@@ -156,26 +159,26 @@ void function () {
   obj.callback_cancel = function () {obj.params.callback (false)}
   obj.destroy_listeners = function (observer) {
    if (observer) observer.disconnect ()
-   document.removeEventListener ('keyup', ok_function)
-   document.removeEventListener ('keyup', cancel_function)
+   document.removeEventListener ('keyup', function ok_function_wrapper)
+   document.removeEventListener ('keyup', cancel_function_wrapper)
   }
-  document.addEventListener           ('keyup', ok_function)
-  obj.buttons.ok.addEventListener     (obj.params.point_event, ok_function)
-  document.addEventListener           ('keyup', cancel_function)
-  obj.buttons.cancel.addEventListener (obj.params.point_event, cancel_function)
+  var ok_function_wrapper     = function (evt) {ok_function    (evt, obj)}
+  var cancel_function_wrapper = function (evt) {cancel_function(evt, obj)}
+  document.addEventListener           ('keyup', ok_function_wrapper)
+  obj.buttons.ok.addEventListener     (obj.params.point_event, ok_function_wrapper
+  document.addEventListener           ('keyup', cancel_function_wrapper)
+  obj.buttons.cancel.addEventListener (obj.params.point_event, cancel_function_wrapper)
   obj.buttons.ok.smoke_pure_obj     = obj
   obj.buttons.cancel.smoke_pure_obj = obj
  }
  
- function ok_function (evt) {
-  var obj = evt.currentTarget.smoke_pure_obj
+ function ok_function (evt, obj) {
   if (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 13))) return
   obj.destroy_listeners ()
   obj.parentNode.removeChild (obj)
   obj.callback_ok ()
  }
- function cancel_function (evt) {
-  var obj = evt.currentTarget.smoke_pure_obj
+ function cancel_function (evt, obj) {
   if (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 27))) return
   obj.destroy_listeners ()
   obj.parentNode.removeChild (obj)
