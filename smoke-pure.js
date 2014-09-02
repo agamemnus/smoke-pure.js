@@ -19,15 +19,15 @@ void function () {
  smoke.observe_mutation = true          // If true, attachess a mutation observer that will destroy the keyboard listeners when the element is removed from the DOM.
  
  // Structure:
- // var obj (return value)                              | smoke-base
- //  obj.dialog_wrapper                                 |  smoke-dialog_wrapper
- //   obj.dialog                                        |   smoke-dialog
- //    obj.text            = obj.dialog.text            |    smoke-dialog-text
- //    obj.prompt          = obj.dialog.prompt          |    smoke-dialog-prompt
- //     obj.prompt.input   = obj.dialog.prompt.input    |     smoke-dialog-prompt-input
- //    obj.buttons         = obj.dialog.buttons         |    smoke-dialog-buttons
- //     obj.buttons.ok     = obj.dialog.buttons.ok      |     smoke-dialog-buttons-ok
- //     obj.buttons.cancel = obj.dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
+ // var obj (return value)                             | smoke-base
+ //  obj.dialog_wrapper                                |  smoke-dialog_wrapper
+ //   obj.dialog                                       |   smoke-dialog
+ //    obj.text            = obj.dialog.text           |    smoke-dialog-text
+ //    obj.prompt          = obj.dialog.prompt         |    smoke-dialog-prompt
+ //     obj.prompt.input   = obj.dialog.prompt.input   |     smoke-dialog-prompt-input
+ //    obj.buttons         = obj.dialog.buttons        |    smoke-dialog-buttons
+ //     obj.buttons.ok     = obj.dialog.buttons.ok     |     smoke-dialog-buttons-ok
+ //     obj.buttons.cancel = obj.dialog.buttons.cancel |     smoke-dialog-buttons-cancel
  
  smoke.build = function (text, params) {
   if ((typeof smoke.parent == "undefined") || (smoke.parent == null)) smoke.parent = document.body
