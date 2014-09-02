@@ -159,13 +159,13 @@ void function () {
   obj.callback_cancel = function () {obj.params.callback (false)}
   obj.destroy_listeners = function (observer) {
    if (observer) observer.disconnect ()
-   document.removeEventListener ('keyup', function ok_function_wrapper)
+   document.removeEventListener ('keyup', ok_function_wrapper)
    document.removeEventListener ('keyup', cancel_function_wrapper)
   }
   var ok_function_wrapper     = function (evt) {ok_function    (evt, obj)}
   var cancel_function_wrapper = function (evt) {cancel_function(evt, obj)}
   document.addEventListener           ('keyup', ok_function_wrapper)
-  obj.buttons.ok.addEventListener     (obj.params.point_event, ok_function_wrapper
+  obj.buttons.ok.addEventListener     (obj.params.point_event, ok_function_wrapper)
   document.addEventListener           ('keyup', cancel_function_wrapper)
   obj.buttons.cancel.addEventListener (obj.params.point_event, cancel_function_wrapper)
   obj.buttons.ok.smoke_pure_obj     = obj
