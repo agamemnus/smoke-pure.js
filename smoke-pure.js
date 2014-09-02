@@ -115,7 +115,6 @@ void function () {
      for (var i = 0, curlen_i = mutation_list.length; i < curlen_i; i++) {
       var mutation_item = mutation_list[i]
       if (mutation_item.type != 'childList') return
-      console.log (mutation_item.type)
       for (var j = 0, curlen_j = mutation_item.removedNodes.length; j < curlen_j; j++) {
        if (mutation_item.removedNodes[j] != obj) continue
        obj.destroy_listeners (observer); return
