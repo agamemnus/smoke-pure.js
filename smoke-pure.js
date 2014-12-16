@@ -17,17 +17,19 @@ void function () {
  smoke.value            = undefined     // The initial value to set the prompt input text to.
  smoke.callback         = undefined     // Function to run after user input is sent.
  smoke.observe_mutation = true          // If true, attachess a mutation observer that will destroy the keyboard listeners when the element is removed from the DOM.
+ smoke.window_opened    = undefined     // Function that runs at the end of smoke.build. Is in the form of "function (dom_window_object, text, processed_params)".
+ smoke.window_closed    = undefined     // Function that runs after the object is removed from the DOM. Is in the form of "function (dom_window_object, text, processed_params)". Requires observe_mutation to be true for full functionality.
  
  // Structure:
- // var obj (return value)                             | smoke-base
- //  obj.dialog_wrapper                                |  smoke-dialog_wrapper
- //   obj.dialog                                       |   smoke-dialog
- //    obj.text            = obj.dialog.text           |    smoke-dialog-text
- //    obj.prompt          = obj.dialog.prompt         |    smoke-dialog-prompt
- //     obj.prompt.input   = obj.dialog.prompt.input   |     smoke-dialog-prompt-input
- //    obj.buttons         = obj.dialog.buttons        |    smoke-dialog-buttons
- //     obj.buttons.ok     = obj.dialog.buttons.ok     |     smoke-dialog-buttons-ok
- //     obj.buttons.cancel = obj.dialog.buttons.cancel |     smoke-dialog-buttons-cancel
+ // var obj (return value)                              | smoke-base
+ //  obj.dialog_wrapper                                 |  smoke-dialog_wrapper
+ //   obj.dialog                                        |   smoke-dialog
+ //    obj.text            = obj.dialog.text            |    smoke-dialog-text
+ //    obj.prompt          = obj.dialog.prompt          |    smoke-dialog-prompt
+ //     obj.prompt.input   = obj.dialog.prompt.input    |     smoke-dialog-prompt-input
+ //    obj.buttons         = obj.dialog.buttons         |    smoke-dialog-buttons
+ //     obj.buttons.ok     = obj.dialog.buttons.ok      |     smoke-dialog-buttons-ok
+ //     obj.buttons.cancel = obj.dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
  
  smoke.build = function (text, params) {
   if ((typeof smoke.parent == "undefined") || (smoke.parent == null)) smoke.parent = document.body
@@ -44,6 +46,9 @@ void function () {
   var input_default_value = (typeof params.value            != "undefined") ? params.value            : smoke.value
   var callback            = (typeof params.callback         != "undefined") ? params.callback         : smoke.callback
   var observe_mutation    = (typeof params.observe_mutation != "undefined") ? params.observe_mutation : smoke.observe_mutation
+  var window_opened       = (typeof params.window_opened    != "undefined") ? params.window_opened    : smoke.window_opened
+  var window_closed       = (typeof params.window_closed    != "undefined") ? params.window_closed    : smoke.window_closed
+  var window_closed_ran   = false
   params.point_event      = point_event
   params.callback         = callback
   
@@ -61,6 +66,7 @@ void function () {
     if (evt.currentTarget != evt.target) return
     obj.parentNode.removeChild (obj)
     params.callback (false, evt)
+    if ((!window_closed_ran) && smoke.window_closed) {smoke.window_closed (obj, text, params); window_closed_ran = true}
    })
   }
   
@@ -107,7 +113,7 @@ void function () {
   smoke['finishbuilding_' + params.type] (obj, params)
   if ((typeof obj.prompt != "undefined") && (autofocus != false)) obj.prompt.input.focus ()
   
-  // Add a mutation observer for listener destruction.
+  // Add a mutation observer that observes for the object's removal. If it is removed, destroy the listeners and run smoke.window_closed.
   if (observe_mutation) {
    var MutationObserver = window.MutationObserver || window.WebkitMutationObserver
    if (typeof MutationObserver != "undefined") {
@@ -117,7 +123,9 @@ void function () {
       if (mutation_item.type != 'childList') return
       for (var j = 0, curlen_j = mutation_item.removedNodes.length; j < curlen_j; j++) {
        if (mutation_item.removedNodes[j] != obj) continue
-       obj.destroy_listeners (observer); return
+       if ((!window_closed_ran) && smoke.window_closed) {smoke.window_closed (obj, text, params); window_closed_ran = true}
+       obj.destroy_listeners (observer)
+       return
       }
      }
     })
@@ -125,13 +133,15 @@ void function () {
    }
   }
   
+  if (smoke.window_opened) smoke.window_opened (obj, text, params)
+  
   return obj
  }
  
  smoke.finishbuilding_alert   = function (obj) {
   obj.callback_ok = function () {obj.params.callback ()}
   obj.destroy_listeners = function (observer) {if (observer) observer.disconnect (); document.removeEventListener ('keyup', ok_function_wrapper)}
-  var ok_function_wrapper = function (evt) {ok_function(evt, obj)}
+  var ok_function_wrapper = obj.ok = function (evt) {ok_function(evt, obj)}
   document.addEventListener       ('keyup', ok_function_wrapper)
   obj.buttons.ok.addEventListener (obj.params.point_event, ok_function_wrapper)
   obj.buttons.ok.smoke_pure_obj = obj
@@ -144,8 +154,8 @@ void function () {
    document.removeEventListener ('keyup', ok_function_wrapper)
    document.removeEventListener ('keyup', cancel_function_wrapper)
   }
-  var ok_function_wrapper     = function (evt) {ok_function    (evt, obj)}
-  var cancel_function_wrapper = function (evt) {cancel_function(evt, obj)}
+  var ok_function_wrapper     = obj.ok     = function (evt) {ok_function    (evt, obj)}
+  var cancel_function_wrapper = obj.cancel = function (evt) {cancel_function(evt, obj)}
   document.addEventListener           ('keyup', ok_function_wrapper)
   obj.buttons.ok.addEventListener     (obj.params.point_event, ok_function_wrapper)
   document.addEventListener           ('keyup', cancel_function_wrapper)
@@ -161,8 +171,8 @@ void function () {
    document.removeEventListener ('keyup', ok_function_wrapper)
    document.removeEventListener ('keyup', cancel_function_wrapper)
   }
-  var ok_function_wrapper     = function (evt) {ok_function    (evt, obj)}
-  var cancel_function_wrapper = function (evt) {cancel_function(evt, obj)}
+  var ok_function_wrapper     = obj.ok     = function (evt) {ok_function    (evt, obj)}
+  var cancel_function_wrapper = obj.cancel = function (evt) {cancel_function(evt, obj)}
   document.addEventListener           ('keyup', ok_function_wrapper)
   obj.buttons.ok.addEventListener     (obj.params.point_event, ok_function_wrapper)
   document.addEventListener           ('keyup', cancel_function_wrapper)
@@ -172,13 +182,13 @@ void function () {
  }
  
  function ok_function (evt, obj) {
-  if (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 13))) return
+  if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 13)))) return
   obj.destroy_listeners ()
   obj.parentNode.removeChild (obj)
   obj.callback_ok ()
  }
  function cancel_function (evt, obj) {
-  if (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 27))) return
+  if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 27)))) return
   obj.destroy_listeners ()
   obj.parentNode.removeChild (obj)
   obj.callback_cancel ()
