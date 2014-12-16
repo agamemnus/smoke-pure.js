@@ -11,6 +11,13 @@ I removed some features. Might add them in later in a different way. Features re
 "Less smoke, more health."
 
 
+Changed 12/16/2014:
+-----------
+1) You can now add a ``smoke_window.window_opened ()`` function and a ``smoke_window.window_closed ()`` callback. These run after a modal window is finished being built (the end of the ``smoke.build`` function) or after a dialog is removed from the DOM.
+
+2) You can now call ``smoke_window.ok ()`` or ``smoke_window.cancel ()`` to programatically run "ok" or "cancel" on a modal window.
+
+
 Changed 9/02/2014:
 -----------
 Removed the document.smoke_pure_obj object in favor of wrapping the "cancel" and "ok" functions with the current object.
