@@ -30,6 +30,10 @@ void function () {
  //    obj.buttons         = obj.dialog.buttons         |    smoke-dialog-buttons
  //     obj.buttons.ok     = obj.dialog.buttons.ok      |     smoke-dialog-buttons-ok
  //     obj.buttons.cancel = obj.dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
+ //
+ // Extras:
+ // obj.ok     () // <-- programatically run "ok" on the object.
+ // obj.cancel () // <-- programatically run "cancel" on the object.
  
  smoke.build = function (text, params) {
   if ((typeof smoke.parent == "undefined") || (smoke.parent == null)) smoke.parent = document.body
