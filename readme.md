@@ -11,6 +11,15 @@ I removed some features. Might add them in later in a different way. Features re
 "Less smoke, more health."
 
 
+Changed 4/23/2017:
+-----------
+1) The cleanup code, which disconnects observers and removes global key event listeners, is now called "cleanup".
+
+2) The cleanup code is now standardized into one function instead of separate functions per modal type -- to keep track of global key event listeners, they are added to an array called `obj.listener_list`.
+
+3) For long pages (where the heght exceeds the screen height), input boxes no longer jump to the top of the screen when focused, and the modal top position is set to the scrollTop of the modal's parent.
+
+
 Changed 12/16/2014:
 -----------
 1) You can now add a ``smoke_window.window_opened ()`` function and a ``smoke_window.window_closed ()`` callback. These run after a modal window is finished being built (the end of the ``smoke.build`` function) or after a dialog is removed from the DOM.
