@@ -126,7 +126,6 @@ void function () {
   
   if ((typeof obj.prompt != "undefined") && (autofocus != false)) obj.prompt.input.focus ()
   obj.style.top = obj.savedScrollTop + "px"
-  console.log (obj.style.top)
   parent.scrollTop = obj.savedScrollTop
   
   // Add a mutation observer that observes for the object's removal. If it is removed, destroy the listeners, reset the scroll top, and run smoke.window_closed.
