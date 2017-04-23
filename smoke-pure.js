@@ -1,4 +1,4 @@
-// Smoke-pure.js: (c) 2013-2014 Michael Romanovsky, or "Agamemnus" on Github. Released under the MIT license.
+// Smoke-pure.js: (c) 2013-2017 Michael Romanovsky, or "Agamemnus" on Github. Released under the MIT license.
 
 void function () {
  var smoke = {}
@@ -57,6 +57,7 @@ void function () {
   params.callback         = callback
   
   var obj = document.createElement('div'); obj.className = css_prefix + '-base'; obj.style.zIndex = zindex
+  obj.savedScrollTop = parent.scrollTop
   parent.appendChild (obj)
   
   var dialog_wrapper = obj.dialog_wrapper = document.createElement ('div'); dialog_wrapper.className = css_prefix + '-dialog_wrapper'
@@ -114,10 +115,21 @@ void function () {
   
   if (typeof params.callback != "function") params.callback = function () {}
   obj.params = params
+  obj.cleanup = function (observer) {
+   if (observer) observer.disconnect ()
+   obj.listener_list.forEach (function (listener) {
+    document.removeEventListener (listener.event, listener.callback)
+    obj.listener_list = []
+   })
+  }
   smoke['finishbuilding_' + params.type] (obj, params)
-  if ((typeof obj.prompt != "undefined") && (autofocus != false)) obj.prompt.input.focus ()
   
-  // Add a mutation observer that observes for the object's removal. If it is removed, destroy the listeners and run smoke.window_closed.
+  if ((typeof obj.prompt != "undefined") && (autofocus != false)) obj.prompt.input.focus ()
+  obj.style.top = obj.savedScrollTop + "px"
+  console.log (obj.style.top)
+  parent.scrollTop = obj.savedScrollTop
+  
+  // Add a mutation observer that observes for the object's removal. If it is removed, destroy the listeners, reset the scroll top, and run smoke.window_closed.
   if (observe_mutation) {
    var MutationObserver = window.MutationObserver || window.WebkitMutationObserver
    if (typeof MutationObserver != "undefined") {
@@ -127,8 +139,8 @@ void function () {
       if (mutation_item.type != 'childList') return
       for (var j = 0, curlen_j = mutation_item.removedNodes.length; j < curlen_j; j++) {
        if (mutation_item.removedNodes[j] != obj) continue
+       obj.cleanup (observer)
        if ((!window_closed_ran) && smoke.window_closed) {smoke.window_closed (obj, text, params); window_closed_ran = true}
-       obj.destroy_listeners (observer)
        return
       }
      }
@@ -144,25 +156,19 @@ void function () {
  
  smoke.finishbuilding_alert   = function (obj) {
   obj.callback_ok = function () {obj.params.callback ()}
-  obj.destroy_listeners = function (observer) {if (observer) observer.disconnect (); document.removeEventListener ('keyup', ok_function_wrapper)}
   var ok_function_wrapper = obj.ok = function (evt) {ok_function(evt, obj)}
-  document.addEventListener       ('keyup', ok_function_wrapper)
+  smoke.add_global_listener (obj, 'keyup', ok_function_wrapper)
   obj.buttons.ok.addEventListener (obj.params.point_event, ok_function_wrapper)
   obj.buttons.ok.smoke_pure_obj = obj
  }
  smoke.finishbuilding_confirm = function (obj) {
   obj.callback_ok     = function () {obj.params.callback (true)}
   obj.callback_cancel = function () {obj.params.callback (false)}
-  obj.destroy_listeners = function (observer) {
-   if (observer) observer.disconnect ()
-   document.removeEventListener ('keyup', ok_function_wrapper)
-   document.removeEventListener ('keyup', cancel_function_wrapper)
-  }
   var ok_function_wrapper     = obj.ok     = function (evt) {ok_function    (evt, obj)}
   var cancel_function_wrapper = obj.cancel = function (evt) {cancel_function(evt, obj)}
-  document.addEventListener           ('keyup', ok_function_wrapper)
+  smoke.add_global_listener (obj, 'keyup', ok_function_wrapper)
+  smoke.add_global_listener (obj, 'keyup', cancel_function_wrapper)
   obj.buttons.ok.addEventListener     (obj.params.point_event, ok_function_wrapper)
-  document.addEventListener           ('keyup', cancel_function_wrapper)
   obj.buttons.cancel.addEventListener (obj.params.point_event, cancel_function_wrapper)
   obj.buttons.ok.smoke_pure_obj     = obj
   obj.buttons.cancel.smoke_pure_obj = obj
@@ -170,31 +176,32 @@ void function () {
  smoke.finishbuilding_prompt  = function (obj) {
   obj.callback_ok     = function () {obj.params.callback (obj.prompt.input.value)}
   obj.callback_cancel = function () {obj.params.callback (false)}
-  obj.destroy_listeners = function (observer) {
-   if (observer) observer.disconnect ()
-   document.removeEventListener ('keyup', ok_function_wrapper)
-   document.removeEventListener ('keyup', cancel_function_wrapper)
-  }
   var ok_function_wrapper     = obj.ok     = function (evt) {ok_function    (evt, obj)}
   var cancel_function_wrapper = obj.cancel = function (evt) {cancel_function(evt, obj)}
-  document.addEventListener           ('keyup', ok_function_wrapper)
+  smoke.add_global_listener (obj, 'keyup', ok_function_wrapper)
+  smoke.add_global_listener (obj, 'keyup', cancel_function_wrapper)
   obj.buttons.ok.addEventListener     (obj.params.point_event, ok_function_wrapper)
-  document.addEventListener           ('keyup', cancel_function_wrapper)
   obj.buttons.cancel.addEventListener (obj.params.point_event, cancel_function_wrapper)
   obj.buttons.ok.smoke_pure_obj     = obj
   obj.buttons.cancel.smoke_pure_obj = obj
  }
  
+ smoke.add_global_listener = function (obj, event, callback) {
+  document.addEventListener (event, callback)
+  if (typeof obj.listener_list == "undefined") obj.listener_list = []
+  obj.listener_list.push ({"event": event, "callback": callback})
+ }
+ 
  function ok_function (evt, obj) {
   if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 13)))) return
-  obj.destroy_listeners ()
-  if (obj.parentNode) obj.parentNode.removeChild (obj)
+  obj.cleanup ()
+  obj.parentNode.removeChild (obj)
   obj.callback_ok ()
  }
  function cancel_function (evt, obj) {
   if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 27)))) return
-  obj.destroy_listeners ()
-  if (obj.parentNode) obj.parentNode.removeChild (obj)
+  obj.cleanup ()
+  obj.parentNode.removeChild (obj)
   obj.callback_cancel ()
  }
  
