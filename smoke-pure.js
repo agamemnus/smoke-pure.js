@@ -194,13 +194,13 @@ void function () {
  function ok_function (evt, obj) {
   if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 13)))) return
   obj.cleanup ()
-  obj.parentNode.removeChild (obj)
+  if (obj.parentNode) obj.parentNode.removeChild (obj)
   obj.callback_ok ()
  }
  function cancel_function (evt, obj) {
   if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 27)))) return
   obj.cleanup ()
-  obj.parentNode.removeChild (obj)
+  if (obj.parentNode) obj.parentNode.removeChild (obj)
   obj.callback_cancel ()
  }
  
