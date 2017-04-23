@@ -21,8 +21,9 @@ void function () {
  smoke.window_closed    = undefined     // Function that runs after the object is removed from the DOM. Is in the form of "function (dom_window_object, text, processed_params)". Requires observe_mutation to be true for full functionality.
  
  smoke.title = {}
- smoke.title.text               = undefined
- smoke.title.close_button_html  = undefined
+ smoke.title.text         = undefined // Extra title text, typically placed on the top of a dialog.
+ smoke.title.close_button = undefined // Close button, typically placed on the top-left of a dialog.
+                                      // The close button automatically has the same functionality as the cancel button.
  
  // Structure:
  // var obj (return value)                              | smoke-base
@@ -88,17 +89,18 @@ void function () {
   // Create the buttons div.
   var buttons = dialog.buttons = document.createElement ('div'); buttons.className = css_prefix + '-dialog-buttons'
   
-  // Add a title to the modal. 
-  if (typeof title.text != "undefined" || (typeof title.close_button_html != "undefined")) {
-   console.log (title.text)
-   console.log (title.close_button_html)
-   if (typeof title.text              == "undefined") title.text = ""
-   if (typeof title.close_button_html == "undefined") title.close_button_html = ""
-   var title_element = dialog.title = document.createElement ('div')
-   title_element.className = css_prefix + '-dialog-title'
-   title_element.innerHTML = title.close_button_html + title.text
-   buttons.title_close = title_element.childNodes[0]
-   buttons.title_close.classList.add(css_prefix + '-dialog-title-cancel')
+  // Add a title to the modal.
+  if ((typeof title.text != "undefined") || (typeof title.close_button != "undefined")) {
+   var title_element = dialog.title = document.createElement ('div'); title_element.className = css_prefix + '-dialog-title'
+   if (typeof title.close_button != "undefined") {
+    var title_close = buttons.title_close = title.close_button.cloneNode(true)
+    title_close.classList.add (css_prefix + '-dialog-title-cancel')
+    title_element.appendChild (title_close)
+   }
+   if (typeof title.text != "undefined") {
+    var title_fragment = document.createDocumentFragment(); title_fragment.textContent = title.text
+    title_element.appendChild (title_fragment)
+   }
    dialog.appendChild (title_element)
   }
   
@@ -148,6 +150,10 @@ void function () {
   if (typeof params.callback != "function") params.callback = function () {}
   obj.dialog.params = params
   smoke['finishbuilding_' + params.type] (obj, params)
+  if (dialog.buttons.title_close) {
+   dialog.buttons.title_close.addEventListener (dialog.params.point_event, dialog.cancel ? dialog.cancel: dialog.ok)
+   dialog.buttons.title_close.smoke_pure_obj = obj
+  }
   
   if ((typeof obj.dialog.prompt != "undefined") && (autofocus != false)) obj.dialog.prompt.input.focus ()
   
@@ -194,11 +200,6 @@ void function () {
   smoke.add_global_listener (dialog, 'keyup', ok_function_wrapper)
   dialog.buttons.ok.addEventListener (dialog.params.point_event, ok_function_wrapper)
   dialog.buttons.ok.smoke_pure_obj = obj
-  
-  if (dialog.buttons.title_close) {
-   dialog.buttons.title_close.addEventListener (dialog.params.point_event, ok_function_wrapper)
-   dialog.buttons.title_close.smoke_pure_obj = obj
-  }
  }
  
  smoke.finishbuilding_confirm = function (obj) {
