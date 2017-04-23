@@ -19,6 +19,11 @@ Changed 4/23/2017:
 
 3) For long pages (where the heght exceeds the screen height), input boxes no longer jump to the top of the screen when focused, and the modal top position is set to the scrollTop of the modal's parent.
 
+4) Added an `ok_reference` attribute. If specified, this will clone that reference into the "OK" button.
+
+5) Moved the "ok" and "cancel" functions (as well as callback_ok and callback_cancel) from the object to object.dialog.
+
+6) Added a `title` attribute with the properties "text" and "close_button". This creates some HTML (a clone of the close button followed by some text) and inserts it into a newly defined title element inside the dialog.
 
 Changed 12/16/2014:
 -----------
