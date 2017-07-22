@@ -11,7 +11,8 @@ void function () {
  smoke.zindex           = 10000         // Z-index of the smoke DOM object. This should be a high number.
  smoke.reverse_buttons  = false         // If false, the "Ok" button appears before (left of) the "Cancel" button. If true, the "Cancel" button appears before the "Ok" button.
  smoke.autofocus        = true          // If true, the input is automatically focused when the smoke DOM object is created.
- smoke.autoexit         = true          // If true, clicking outside the smoke dialog (but inside the dialog_wrapper) closes/detaches the smoke DOM object and runs the callback with a parameter of (false, evt).
+ smoke.autoexit         = true          // If true, clicking outside the smoke dialog (but inside the dialog_wrapper) detaches the smoke DOM object, cleans up event listeners, and runs the callback with a parameter of (false, evt).
+ smoke.autoclose        = true          // If true, clicking any regular button that would normally close a dialog (.e.g.: "ok", "cancel") actually closes the dialog (detaches it / cleans up listeners). Otherwise, "dialog.close()" must be run manually.
  smoke.custom_css       = {}            // Custom classes for each object in the structure. E.G.: smoke.custom_css = {"button.ok": "my_ok_button_style"} or smoke.custom_css = {"buttons.ok": ["my_ok_button_style1", "my_ok_button_style2"]}
  smoke.css_prefix       = "smoke"       // The CSS prefix for the classes used in the .build function.
  smoke.value            = undefined     // The initial value to set the prompt input text to.
@@ -51,6 +52,7 @@ void function () {
   var reverse_buttons     = (typeof params.reverse_buttons  != "undefined") ? params.reverse_buttons  : smoke.reverse_buttons
   var autoexit            = (typeof params.autoexit         != "undefined") ? params.autoexit         : smoke.autoexit
   var autofocus           = (typeof params.autofocus        != "undefined") ? params.autofocus        : smoke.autofocus
+  var autoclose           = (typeof params.autoclose        != "undefined") ? params.autoclose        : smoke.autoclose
   var custom_css          = (typeof params.custom_css       != "undefined") ? params.custom_css       : smoke.custom_css
   var css_prefix          = (typeof params.css_prefix       != "undefined") ? params.css_prefix       : smoke.css_prefix
   var input_default_value = (typeof params.value            != "undefined") ? params.value            : smoke.value
@@ -76,7 +78,7 @@ void function () {
    dialog_wrapper.addEventListener (point_event, function (evt) {
     if (typeof evt.changedTouches != "undefined") evt = evt.changedTouches[0]
     if (evt.currentTarget != evt.target) return
-    obj.parentNode.removeChild (obj)
+    obj.dialog.close ()
     params.callback (false, evt)
     if ((!window_closed_ran) && smoke.window_closed) {smoke.window_closed (obj, text, params); window_closed_ran = true}
    })
@@ -188,6 +190,8 @@ void function () {
    })
   }
   
+  dialog.close = function () {obj.dialog.cleanup (); if (obj.parentNode) obj.parentNode.removeChild (obj)}
+  
   if (smoke.window_opened) smoke.window_opened (obj, text, params)
   
   return obj
@@ -237,14 +241,12 @@ void function () {
  
  function ok_function (evt, obj) {
   if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 13)))) return
-  obj.dialog.cleanup ()
-  if (obj.parentNode) obj.parentNode.removeChild (obj)
+  if (obj.autoclose) obj.dialog.close ()
   obj.dialog.callback_ok ()
  }
  function cancel_function (evt, obj) {
   if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 27)))) return
-  obj.dialog.cleanup ()
-  if (obj.parentNode) obj.parentNode.removeChild (obj)
+  if (obj.autoclose) obj.dialog.close ()
   obj.dialog.callback_cancel ()
  }
  
