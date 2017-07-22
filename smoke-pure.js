@@ -64,6 +64,7 @@ void function () {
   var window_closed_ran   = false
   params.point_event      = point_event
   params.callback         = callback
+  params.autoclose        = autoclose
   
   var obj = document.createElement('div'); obj.className = css_prefix + '-base'; obj.style.zIndex = zindex
   obj.savedScrollTop = parent.scrollTop
@@ -241,12 +242,12 @@ void function () {
  
  function ok_function (evt, obj) {
   if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 13)))) return
-  if (obj.autoclose) obj.dialog.close ()
+  if (obj.dialog.params.autoclose) obj.dialog.close ()
   obj.dialog.callback_ok ()
  }
  function cancel_function (evt, obj) {
   if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 27)))) return
-  if (obj.autoclose) obj.dialog.close ()
+  if (obj.dialog.params.autoclose) obj.dialog.close ()
   obj.dialog.callback_cancel ()
  }
  
