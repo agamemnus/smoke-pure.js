@@ -10,6 +10,11 @@ I removed some features. Might add them in later in a different way. Features re
 
 "Less smoke, more health."
 
+Changed 7/22/2017:
+-----------
+Added the `autoclose` property, which is true by default.
+If true, clicking any regular button that would normally close a dialog (.e.g.: "ok", "cancel") actually closes the dialog (detaches it / cleans up listeners). Otherwise, "dialog.close()" must be run manually.
+Setting autoclose to `false` can be useful in constructing a more persistent multi-event modal.
 
 Changed 4/23/2017:
 -----------
