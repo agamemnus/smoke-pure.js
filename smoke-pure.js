@@ -27,15 +27,15 @@ void function () {
                                       // The close button automatically has the same functionality as the cancel button.
  
  // Structure:
- // var obj (return value)                              | smoke-base
- //  obj.dialog_wrapper                                 |  smoke-dialog_wrapper
- //   obj.dialog                                        |   smoke-dialog
- //    obj.text            = obj.dialog.text            |    smoke-dialog-text
- //    obj.prompt          = obj.dialog.prompt          |    smoke-dialog-prompt
- //     obj.prompt.input   = obj.dialog.prompt.input    |     smoke-dialog-prompt-input
- //    obj.buttons         = obj.dialog.buttons         |    smoke-dialog-buttons
- //     obj.buttons.ok     = obj.dialog.buttons.ok      |     smoke-dialog-buttons-ok
- //     obj.buttons.cancel = obj.dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
+ // var obj (return value)       | smoke-base
+ //  obj.dialog_wrapper          |  smoke-dialog_wrapper
+ //   obj.dialog                 |   smoke-dialog
+ //   obj.dialog.text            |    smoke-dialog-text
+ //   obj.dialog.prompt          |    smoke-dialog-prompt
+ //   obj.dialog.prompt.input    |     smoke-dialog-prompt-input
+ //   obj.dialog.buttons         |    smoke-dialog-buttons
+ //   obj.dialog.buttons.ok      |     smoke-dialog-buttons-ok
+ //   obj.dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
  //
  // Extras:
  // obj.dialog.ok     () // <-- programatically run "ok" on the object.
