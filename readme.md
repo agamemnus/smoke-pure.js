@@ -64,7 +64,7 @@ http://agamemnus.github.io/smoke-pure.js/example.htm
 
 
 ````
- // Options:
+// Options:
  smoke.ok               = "Ok"          // Text for "Ok" button.
  smoke.cancel           = "Cancel"      // Text for "Cancel" button.
  smoke.point_event      = 'click'       // Point event ("click", "touchstart", etc.)
@@ -72,7 +72,8 @@ http://agamemnus.github.io/smoke-pure.js/example.htm
  smoke.zindex           = 10000         // Z-index of the smoke DOM object. This should be a high number.
  smoke.reverse_buttons  = false         // If false, the "Ok" button appears before (left of) the "Cancel" button. If true, the "Cancel" button appears before the "Ok" button.
  smoke.autofocus        = true          // If true, the input is automatically focused when the smoke DOM object is created.
- smoke.autoexit         = true          // If true, clicking outside the smoke dialog (but inside the dialog_wrapper) closes/detaches the smoke DOM object and runs the callback with a parameter of (false, evt).
+ smoke.autoexit         = true          // If true, clicking outside the smoke dialog (but inside the dialog_wrapper) detaches the smoke DOM object, cleans up event listeners, and runs the callback with a parameter of (false, evt).
+ smoke.autoclose        = true          // If true, clicking any regular button that would normally close a dialog (.e.g.: "ok", "cancel") actually closes the dialog (detaches it / cleans up listeners). Otherwise, "dialog.close()" must be run manually.
  smoke.custom_css       = {}            // Custom classes for each object in the structure. E.G.: smoke.custom_css = {"button.ok": "my_ok_button_style"} or smoke.custom_css = {"buttons.ok": ["my_ok_button_style1", "my_ok_button_style2"]}
  smoke.css_prefix       = "smoke"       // The CSS prefix for the classes used in the .build function.
  smoke.value            = undefined     // The initial value to set the prompt input text to.
@@ -81,20 +82,25 @@ http://agamemnus.github.io/smoke-pure.js/example.htm
  smoke.window_opened    = undefined     // Function that runs at the end of smoke.build. Is in the form of "function (dom_window_object, text, processed_params)".
  smoke.window_closed    = undefined     // Function that runs after the object is removed from the DOM. Is in the form of "function (dom_window_object, text, processed_params)". Requires observe_mutation to be true for full functionality.
  
+ smoke.title = {}
+ smoke.title.text         = undefined // Extra title text, typically placed on the top of a dialog.
+ smoke.title.close_button = undefined // Close button, typically placed on the top-left of a dialog.
+                                      // The close button automatically has the same functionality as the cancel button.
+ 
  // Structure:
- // var obj (return value)                              | smoke-base
- //  obj.dialog_wrapper                                 |  smoke-dialog_wrapper
- //   obj.dialog                                        |   smoke-dialog
- //    obj.text            = obj.dialog.text            |    smoke-dialog-text
- //    obj.prompt          = obj.dialog.prompt          |    smoke-dialog-prompt
- //     obj.prompt.input   = obj.dialog.prompt.input    |     smoke-dialog-prompt-input
- //    obj.buttons         = obj.dialog.buttons         |    smoke-dialog-buttons
- //     obj.buttons.ok     = obj.dialog.buttons.ok      |     smoke-dialog-buttons-ok
- //     obj.buttons.cancel = obj.dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
+ // var obj (return value)       | smoke-base
+ //  obj.dialog_wrapper          |  smoke-dialog_wrapper
+ //   obj.dialog                 |   smoke-dialog
+ //   obj.dialog.text            |    smoke-dialog-text
+ //   obj.dialog.prompt          |    smoke-dialog-prompt
+ //   obj.dialog.prompt.input    |     smoke-dialog-prompt-input
+ //   obj.dialog.buttons         |    smoke-dialog-buttons
+ //   obj.dialog.buttons.ok      |     smoke-dialog-buttons-ok
+ //   obj.dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
  //
  // Extras:
- // obj.ok     () // <-- programatically run "ok" on the object.
- // obj.cancel () // <-- programatically run "cancel" on the object.
+ // obj.dialog.ok     () // <-- programatically run "ok" on the object.
+ // obj.dialog.cancel () // <-- programatically run "cancel" on the object.
 ````
 
 Money?
