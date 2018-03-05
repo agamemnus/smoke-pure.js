@@ -103,7 +103,7 @@ void function () {
   var buttons = dialog.buttons = document.createElement ('div'); buttons.className = css_prefix + '-dialog-buttons'
   
   // Add a title element to the modal.
-  if (typeof title != "undefined") {
+  if (typeof title.text != "undefined" || typeof title.close != "undefined" || typeof title.close_reference != "undefined") {
    // Create the actual title element.
    var title_element = dialog.title_element = document.createElement ('div'); title_element.className = css_prefix + '-dialog-title'
    
