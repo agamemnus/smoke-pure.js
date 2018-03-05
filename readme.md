@@ -84,23 +84,27 @@ http://agamemnus.github.io/smoke-pure.js/example.htm
  
  smoke.title = {}
  smoke.title.text         = undefined // Extra title text, typically placed on the top of a dialog.
- smoke.title.close_button = undefined // Close button, typically placed on the top-left of a dialog.
-                                      // The close button automatically has the same functionality as the cancel button.
+ smoke.title.close_button = undefined // Close button, typically placed on the top-right of a dialog.
+                                      // The close button has the same functionality as the cancel button, by default.
  
- // Structure:
- // var obj (return value)       | smoke-base
- //  obj.dialog_wrapper          |  smoke-dialog_wrapper
- //   obj.dialog                 |   smoke-dialog
- //   obj.dialog.text            |    smoke-dialog-text
- //   obj.dialog.prompt          |    smoke-dialog-prompt
- //   obj.dialog.prompt.input    |     smoke-dialog-prompt-input
- //   obj.dialog.buttons         |    smoke-dialog-buttons
- //   obj.dialog.buttons.ok      |     smoke-dialog-buttons-ok
- //   obj.dialog.buttons.cancel  |     smoke-dialog-buttons-cancel
+ // Example:
+ // var modal = smoke.alert("This is an alert.", callback, options)
+ //
+ // Property                      | CSS
+ // ------------------------------|-------------------------------
+ // var modal (return value)      | smoke-base
+ //  modal.dialog_wrapper         |  smoke-dialog_wrapper
+ //   modal.dialog                |   smoke-dialog
+ //   modal.dialog.text           |    smoke-dialog-text
+ //   modal.dialog.prompt         |    smoke-dialog-prompt
+ //   modal.dialog.prompt.input   |     smoke-dialog-prompt-input
+ //   modal.dialog.buttons        |    smoke-dialog-buttons
+ //   modal.dialog.buttons.ok     |     smoke-dialog-buttons-ok
+ //   modal.dialog.buttons.cancel |     smoke-dialog-buttons-cancel
  //
  // Extras:
- // obj.dialog.ok     () // <-- programatically run "ok" on the object.
- // obj.dialog.cancel () // <-- programatically run "cancel" on the object.
+ // modal.dialog.ok     () // <-- programatically run "ok" on the object.
+ // modal.dialog.cancel () // <-- programatically run "cancel" on the object.
 ````
 
 Money?
