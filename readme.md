@@ -64,7 +64,7 @@ http://agamemnus.github.io/smoke-pure.js/example.htm
 
 
 ````
-// Options:
+ // Options:
  smoke.ok               = "Ok"          // Text for "Ok" button.
  smoke.cancel           = "Cancel"      // Text for "Cancel" button.
  smoke.point_event      = 'click'       // Point event ("click", "touchstart", etc.)
