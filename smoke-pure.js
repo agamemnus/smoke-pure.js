@@ -118,14 +118,14 @@ void function () {
    if (typeof title.close != "undefined" || typeof title.close_reference != "undefined") {
     if (typeof title.close_reference != "undefined") {
      var title_close = title.close_reference.cloneNode (true)
-     title_close.classList.add (css_prefix + '-dialog-title-close')
     } else {
+     var close_text = title.close
      var title_close = document.createElement ('button')
-     title_close.classList.add (css_prefix + '-dialog-title-close')
-     title_close.innerHTML = title.close
+     title_close.innerHTML = close_text
     }
+    title_close.classList.add (css_prefix + '-dialog-title-close')
     title_element.title_close = title_close
-	title_element.appendChild (title_close)
+    title_element.appendChild (title_close)
    }
    dialog.appendChild (title_element)
   }
