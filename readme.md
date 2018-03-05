@@ -10,6 +10,12 @@ I removed some features. Might add them in later in a different way. Features re
 
 "Less smoke, more health."
 
+Changed 3/5/2018:
+-----------
+1) Breaking changes to, and cleanup of, `title`.
+2) Reworked some variable names.
+3) Added `smoke.cancel_reference`.
+
 Changed 7/22/2017:
 -----------
 Added the `autoclose` property, which is true by default.
@@ -66,7 +72,9 @@ http://agamemnus.github.io/smoke-pure.js/example.htm
 ````
  // Options:
  smoke.ok               = "Ok"          // Text for "Ok" button.
+ smoke.ok_reference     = undefined     // Instead of text, clone the supplied element and apply the "Ok" button features to that clone.
  smoke.cancel           = "Cancel"      // Text for "Cancel" button.
+ smoke.cancel_reference = undefined     // Instead of text, clone the supplied element and apply the "Cancel" button features to that clone.
  smoke.point_event      = 'click'       // Point event ("click", "touchstart", etc.)
  smoke.parent           = document.body // Where the smoke div attaches. Note that if this is undefined (because document.body hasn't been added yet), the build function attempts to define it as document.body when the build function is run --that is, when the smoke DOM object is created.
  smoke.zindex           = 10000         // Z-index of the smoke DOM object. This should be a high number.
@@ -82,25 +90,28 @@ http://agamemnus.github.io/smoke-pure.js/example.htm
  smoke.window_opened    = undefined     // Function that runs at the end of smoke.build. Is in the form of "function (dom_window_object, text, processed_params)".
  smoke.window_closed    = undefined     // Function that runs after the object is removed from the DOM. Is in the form of "function (dom_window_object, text, processed_params)". Requires observe_mutation to be true for full functionality.
  
- smoke.title = {}
- smoke.title.text         = undefined // Extra title text, typically placed on the top of a dialog.
- smoke.title.close_button = undefined // Close button, typically placed on the top-right of a dialog.
-                                      // The close button has the same functionality as the cancel button, by default.
+ smoke.title                 = {}        // Title element with the below options. Required in order to have a close button.
+ smoke.title.text            = undefined // Title text. If you don't want title text, don't define this.
+ smoke.title.close           = undefined // Text for a "close" button. If you don't want a close button in the title, don't define this.
+ smoke.title.close_reference = undefined // Instead of text, clone the supplied element and apply the "Cancel" button features to that clone.
  
  // Example:
  // var modal = smoke.alert("This is an alert.", callback, options)
  //
- // Property                      | CSS
- // ------------------------------|-------------------------------
- // var modal (return value)      | smoke-base
- //  modal.dialog_wrapper         |  smoke-dialog_wrapper
- //   modal.dialog                |   smoke-dialog
- //   modal.dialog.text           |    smoke-dialog-text
- //   modal.dialog.prompt         |    smoke-dialog-prompt
- //   modal.dialog.prompt.input   |     smoke-dialog-prompt-input
- //   modal.dialog.buttons        |    smoke-dialog-buttons
- //   modal.dialog.buttons.ok     |     smoke-dialog-buttons-ok
- //   modal.dialog.buttons.cancel |     smoke-dialog-buttons-cancel
+ // Property                           | CSS
+ // -----------------------------------|-------------------------------
+ // var modal (return value)           | smoke-base
+ //  modal.dialog_wrapper              |  smoke-dialog_wrapper
+ //   modal.dialog                     |   smoke-dialog
+ //   modal.dialog.title_element       |    smoke-dialog-title
+ //   modal.dialog.title_element.text  |     smoke-dialog-title-text
+ //   modal.dialog.title_element.close |     smoke-dialog-title-close
+ //   modal.dialog.text                |    smoke-dialog-text
+ //   modal.dialog.prompt              |    smoke-dialog-prompt
+ //   modal.dialog.prompt.input        |     smoke-dialog-prompt-input
+ //   modal.dialog.buttons             |    smoke-dialog-buttons
+ //   modal.dialog.buttons.ok          |     smoke-dialog-buttons-ok
+ //   modal.dialog.buttons.cancel      |     smoke-dialog-buttons-cancel
  //
  // Extras:
  // modal.dialog.ok     () // <-- programatically run "ok" on the object.
