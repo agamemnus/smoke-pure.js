@@ -22,6 +22,7 @@ void function () {
  smoke.observe_mutation = true          // If true, attachess a mutation observer that will destroy the keyboard listeners when the element is removed from the DOM.
  smoke.window_opened    = undefined     // Function that runs at the end of smoke.build. Is in the form of "function (dom_window_object, text, processed_params)".
  smoke.window_closed    = undefined     // Function that runs after the object is removed from the DOM. Is in the form of "function (dom_window_object, text, processed_params)". Requires observe_mutation to be true for full functionality.
+ smoke.use_wrapper      = true          // For older browsers, we have a wrapper in between the base and the modal.
  
  smoke.title                 = {}        // Title element with the below options. Required in order to have a close button.
  smoke.title.text            = undefined // Title text. If you don't want title text, don't define this.
@@ -71,6 +72,7 @@ void function () {
   var title               = (typeof params.title            != "undefined") ? merge_objects(smoke.title, params.title) : smoke.title
   var window_opened       = (typeof params.window_opened    != "undefined") ? params.window_opened    : smoke.window_opened
   var window_closed       = (typeof params.window_closed    != "undefined") ? params.window_closed    : smoke.window_closed
+  var use_wrapper         = (typeof params.use_wrapper      != "undefined") ? params.use_wrapper      : smoke.use_wrapper
   var window_closed_ran   = false
   params.point_event      = point_event
   params.callback         = callback
@@ -80,8 +82,12 @@ void function () {
   modal.savedScrollTop = parent.scrollTop
   parent.appendChild (modal)
   
-  var dialog_wrapper = modal.dialog_wrapper = document.createElement ('div'); dialog_wrapper.className = css_prefix + '-dialog_wrapper'
-  modal.appendChild (dialog_wrapper)
+  if (use_wrapper) {
+   var dialog_wrapper = modal.dialog_wrapper = document.createElement ('div'); dialog_wrapper.className = css_prefix + '-dialog_wrapper'
+   modal.appendChild (dialog_wrapper)
+  } else {
+   var dialog_wrapper = modal
+  }
   
   // Add an event listener for when the user clicks outside of the dialog, but inside the dialog wrapper.
   // If activated, the parent smoke div removes itself and calls the callback.
