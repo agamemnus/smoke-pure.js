@@ -93,7 +93,6 @@ void function () {
   // If activated, the parent smoke div removes itself and calls the callback.
   if (autoexit) {
    dialog_wrapper.addEventListener (point_event, function (evt) {
-    if (typeof evt.changedTouches != "undefined") evt = evt.changedTouches[0]
     if (evt.currentTarget != evt.target) return
     modal.dialog.close ()
     params.callback (false, evt)
