@@ -92,12 +92,12 @@ void function () {
   // Add an event listener for when the user clicks outside of the dialog, but inside the dialog wrapper.
   // If activated, the parent smoke div removes itself and calls the callback.
   if (autoexit) {
-   dialog_wrapper.addEventListener (point_event, function (evt) {
+   setTimeout(function () {dialog_wrapper.addEventListener(point_event, function (evt) {
     if (evt.currentTarget != evt.target) return
-    modal.dialog.close ()
-    params.callback (false, evt)
-    if ((!window_closed_ran) && smoke.window_closed) {smoke.window_closed (modal, text, params); window_closed_ran = true}
-   })
+    modal.dialog.close()
+    params.callback(false, evt)
+    if ((!window_closed_ran) && smoke.window_closed) {smoke.window_closed(modal, text, params); window_closed_ran = true}
+   })}, 0)
   }
   
   // Create the dialog element.
