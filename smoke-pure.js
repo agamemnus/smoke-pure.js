@@ -207,7 +207,7 @@ void function () {
   if (observe_mutation) {
    var MutationObserver = window.MutationObserver || window.WebkitMutationObserver
    if (typeof MutationObserver != "undefined") {
-    var observer = new MutationObserver (function (mutation_list) {
+    var observer = dialog.removal_observer = new MutationObserver (function (mutation_list) {
      for (var i = 0, curlen_i = mutation_list.length; i < curlen_i; i++) {
       var mutation_item = mutation_list[i]
       if (mutation_item.type != 'childList') return
@@ -232,7 +232,7 @@ void function () {
    })
   }
   
-  dialog.close = function (truthy) {dialog.cleanup (observer); dialog.params.callback (truthy)}
+  dialog.close = function (truthy) {dialog.cleanup (dialog.removal_observer); dialog.params.callback (truthy)}
   
   if (smoke.window_opened) smoke.window_opened (modal, text, params)
   
@@ -283,12 +283,12 @@ void function () {
  
  function ok_function (evt, modal) {
   if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 13)))) return
-  if (modal.dialog.params.autoclose) modal.dialog.cleanup (observer)
+  if (modal.dialog.params.autoclose) modal.dialog.cleanup (modal.dialog.removal_observer)
   modal.dialog.callback_ok ()
  }
  function cancel_function (evt, modal) {
   if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 27)))) return
-  if (modal.dialog.params.autoclose) modal.dialog.cleanup (observer)
+  if (modal.dialog.params.autoclose) modal.dialog.cleanup (modal.dialog.removal_observer)
   modal.dialog.callback_cancel ()
  }
  
