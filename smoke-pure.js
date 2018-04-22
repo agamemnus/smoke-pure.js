@@ -30,7 +30,7 @@ void function () {
  smoke.title.close_reference = undefined // Instead of text, clone the supplied element and apply the "Cancel" button features to that clone.
  
  // Example:
- // var modal = smoke.alert("This is an alert!", callback, options)
+ // var modal = smoke.alert("This is an alert.", callback, options)
  //
  // Property                           | CSS
  // -----------------------------------|-------------------------------
