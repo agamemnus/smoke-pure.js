@@ -92,11 +92,10 @@ void function () {
   // Add an event listener for when the user clicks outside of the dialog, but inside the dialog wrapper.
   // If activated, the parent smoke div removes itself and calls the callback.
   if (autoexit) {
-   setTimeout(function () {dialog_wrapper.addEventListener(point_event, function (evt) {
+   setTimeout(function () {dialog_wrapper.addEventListener (point_event, function (evt) {
     if (evt.currentTarget != evt.target) return
-    evt.stopPropagation()
-    modal.dialog.close()
-    params.callback(false, evt)
+    evt.stopPropagation ()
+    modal.dialog.close (false)
     if ((!window_closed_ran) && smoke.window_closed) {smoke.window_closed(modal, text, params); window_closed_ran = true}
    })}, 0)
   }
@@ -225,6 +224,7 @@ void function () {
   }
   
   dialog.cleanup = function (observer) {
+   if (modal.parentNode) modal.parentNode.removeChild (modal)
    if (observer) observer.disconnect ()
    dialog.listener_list.forEach (function (listener) {
     document.removeEventListener (listener.event, listener.callback)
@@ -232,7 +232,7 @@ void function () {
    })
   }
   
-  dialog.close = function () {modal.dialog.cleanup (); if (modal.parentNode) modal.parentNode.removeChild (modal)}
+  dialog.close = function (truthy) {dialog.cleanup (observer); dialog.params.callback (truthy)}
   
   if (smoke.window_opened) smoke.window_opened (modal, text, params)
   
@@ -283,12 +283,12 @@ void function () {
  
  function ok_function (evt, modal) {
   if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 13)))) return
-  if (modal.dialog.params.autoclose) modal.dialog.close ()
+  if (modal.dialog.params.autoclose) modal.dialog.cleanup (observer)
   modal.dialog.callback_ok ()
  }
  function cancel_function (evt, modal) {
   if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 27)))) return
-  if (modal.dialog.params.autoclose) modal.dialog.close ()
+  if (modal.dialog.params.autoclose) modal.dialog.cleanup (observer)
   modal.dialog.callback_cancel ()
  }
  
