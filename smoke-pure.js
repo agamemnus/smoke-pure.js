@@ -95,6 +95,7 @@ void function () {
    setTimeout(function () {dialog_wrapper.addEventListener (point_event, function (evt) {
     if (evt.currentTarget != evt.target) return
     evt.stopPropagation ()
+    evt.preventDefault ()
     modal.dialog.close (false)
     if ((!window_closed_ran) && smoke.window_closed) {smoke.window_closed(modal, text, params); window_closed_ran = true}
    })}, 0)
