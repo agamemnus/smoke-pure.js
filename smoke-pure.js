@@ -1,5 +1,3 @@
-// Smoke-pure.js: (c) 2013-2018 Michael Romanovsky, or "Agamemnus" on Github. Released under the MIT license.
-
 void function () {
  var smoke = {}
  
@@ -28,6 +26,8 @@ void function () {
  smoke.title.text            = undefined // Title text. If you don't want title text, don't define this.
  smoke.title.close           = undefined // Text for a "close" button. If you don't want a close button in the title, don't define this.
  smoke.title.close_reference = undefined // Instead of text, clone the supplied element and apply the "Cancel" button features to that clone.
+ 
+ smoke.extension = [] // Extension functions.
  
  // Example:
  // var modal = smoke.alert("This is an alert.", callback, options)
@@ -237,8 +237,13 @@ void function () {
   
   if (smoke.window_opened) smoke.window_opened (modal, text, params)
   
+  for (var value in params) {
+   if (smoke.extension[value]) smoke.extension[value](params[value], modal, text, callback, params)
+  }
   return modal
  }
+ 
+ smoke.extend = function (value, func) {smoke.extension[value] = func}
  
  smoke.finishbuilding_alert   = function (modal) {
   var dialog = modal.dialog
