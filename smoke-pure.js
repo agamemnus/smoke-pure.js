@@ -80,11 +80,11 @@ void function () {
   
   var modal = document.createElement('div'); modal.className = css_prefix + '-base'; modal.style.zIndex = zindex
   modal.savedScrollTop = parent.scrollTop
-  parent.appendChild (modal)
+  parent.appendChild(modal)
   
   if (use_wrapper) {
-   var dialog_wrapper = modal.dialog_wrapper = document.createElement ('div'); dialog_wrapper.className = css_prefix + '-dialog_wrapper'
-   modal.appendChild (dialog_wrapper)
+   var dialog_wrapper = modal.dialog_wrapper = document.createElement('div'); dialog_wrapper.className = css_prefix + '-dialog_wrapper'
+   modal.appendChild(dialog_wrapper)
   } else {
    var dialog_wrapper = modal
   }
@@ -92,93 +92,93 @@ void function () {
   // Add an event listener for when the user clicks outside of the dialog, but inside the dialog wrapper.
   // If activated, the parent smoke div removes itself and calls the callback.
   if (autoexit) {
-   setTimeout(function () {dialog_wrapper.addEventListener (point_event, function (evt) {
+   setTimeout(function () {dialog_wrapper.addEventListener(point_event, function (evt) {
     if (evt.currentTarget != evt.target) return
-    evt.stopPropagation ()
-    evt.preventDefault ()
-    modal.dialog.close (false)
+    evt.stopPropagation()
+    evt.preventDefault()
+    modal.dialog.close(false)
     if ((!window_closed_ran) && smoke.window_closed) {smoke.window_closed(modal, text, params); window_closed_ran = true}
    })}, 0)
   }
   
   // Create the dialog element.
-  var dialog = modal.dialog = document.createElement ('div'); dialog.className = css_prefix + '-dialog'
-  dialog_wrapper.appendChild (dialog)
+  var dialog = modal.dialog = document.createElement('div'); dialog.className = css_prefix + '-dialog'
+  dialog_wrapper.appendChild(dialog)
   
   // Create the buttons div.
-  var buttons = dialog.buttons = document.createElement ('div'); buttons.className = css_prefix + '-dialog-buttons'
+  var buttons = dialog.buttons = document.createElement('div'); buttons.className = css_prefix + '-dialog-buttons'
   
   // Add a title element to the modal.
   if (typeof title.text != "undefined" || typeof title.close != "undefined" || typeof title.close_reference != "undefined") {
    // Create the actual title element.
-   var title_element = dialog.title_element = document.createElement ('div'); title_element.className = css_prefix + '-dialog-title'
+   var title_element = dialog.title_element = document.createElement('div'); title_element.className = css_prefix + '-dialog-title'
    
    // Add text to the title element, if the "text" property is defined.
    if (typeof title.text != "undefined") {
-    var title_text = title_element.text = document.createElement ('div'); title_text.className = css_prefix + '-dialog-title-text'
-    title_element.appendChild (title_text)
+    var title_text = title_element.text = document.createElement('div'); title_text.className = css_prefix + '-dialog-title-text'
+    title_element.appendChild(title_text)
     title_text.innerHTML = title.text
    }
    
    // Add a close button to the title element, if the "close" property is defined.
    if (typeof title.close != "undefined" || typeof title.close_reference != "undefined") {
     if (typeof title.close_reference != "undefined") {
-     var title_close = title.close_reference.cloneNode (true)
+     var title_close = title.close_reference.cloneNode(true)
     } else {
      var close_text = title.close
-     var title_close = document.createElement ('button')
+     var title_close = document.createElement('button')
      title_close.innerHTML = close_text
     }
     title_close.classList.add (css_prefix + '-dialog-title-close')
     title_element.title_close = title_close
-    title_element.appendChild (title_close)
+    title_element.appendChild(title_close)
    }
-   dialog.appendChild (title_element)
+   dialog.appendChild(title_element)
   }
   
   // Add text to the modal.
-  var text_div = dialog.text = document.createElement ('div'); text_div.className = css_prefix + '-dialog-text'
+  var text_div = dialog.text = document.createElement('div'); text_div.className = css_prefix + '-dialog-text'
   text_div.innerHTML = text
-  dialog.appendChild (text_div)
+  dialog.appendChild(text_div)
   
   // Add a prompt to the modal.
   if (params.type == 'prompt') {
-   var prompt = modal.dialog.prompt = document.createElement ('div'); prompt.className = css_prefix + '-prompt'
-   prompt.input = document.createElement ('input'); prompt.input.type = 'text';  prompt.input.className = css_prefix + '-prompt-input'
+   var prompt = modal.dialog.prompt = document.createElement('div'); prompt.className = css_prefix + '-prompt'
+   prompt.input = document.createElement('input'); prompt.input.type = 'text';  prompt.input.className = css_prefix + '-prompt-input'
    if (typeof input_default_value != "undefined") prompt.input.value = input_default_value
-   prompt.appendChild (prompt.input)
-   dialog.appendChild (prompt)
+   prompt.appendChild(prompt.input)
+   dialog.appendChild(prompt)
   }
   
   // Create an "Ok" button.
   if (typeof ok_reference != "undefined") {
-   buttons.ok = ok_reference.cloneNode (true)
+   buttons.ok = ok_reference.cloneNode(true)
   } else {
-   buttons.ok = document.createElement ('button'); buttons.ok.classList.add (css_prefix + '-dialog-buttons-ok'); buttons.ok.innerHTML = ok
+   buttons.ok = document.createElement('button'); buttons.ok.classList.add(css_prefix + '-dialog-buttons-ok'); buttons.ok.innerHTML = ok
   }
   
   // Create a "Cancel" button if the modal type is "prompt" or "confirm".
   if ((params.type == 'prompt') || (params.type == 'confirm')) {
    if (typeof cancel_reference != "undefined") {
-    buttons.cancel = cancel_reference.cloneNode (true)
+    buttons.cancel = cancel_reference.cloneNode(true)
    } else {
-    buttons.cancel = document.createElement ('button'); buttons.cancel.classList.add (css_prefix + '-dialog-buttons-cancel'); buttons.cancel.innerHTML = cancel
+    buttons.cancel = document.createElement('button'); buttons.cancel.classList.add(css_prefix + '-dialog-buttons-cancel'); buttons.cancel.innerHTML = cancel
    }
   }
   
   // Add "ok" and "cancel" buttons to the modal.
   switch (params.type) {
-   case "alert": buttons.appendChild (buttons.ok); break
+   case "alert": buttons.appendChild(buttons.ok); break
    case "prompt": case "confirm":
     if (params.reverse_buttons) {
-     buttons.appendChild (buttons.cancel); buttons.appendChild (buttons.ok)
+     buttons.appendChild(buttons.cancel); buttons.appendChild(buttons.ok)
     } else {
-     buttons.appendChild (buttons.ok); buttons.appendChild (buttons.cancel)
+     buttons.appendChild(buttons.ok); buttons.appendChild(buttons.cancel)
     }
    break
   }
   
-  dialog.appendChild (buttons)
+  dialog.appendChild(buttons)
   
   // Append any extra CSS styles on any part of the structure.
   for (var current_structure_name in custom_css) {
@@ -192,17 +192,16 @@ void function () {
   
   if (typeof params.callback != "function") params.callback = function () {}
   modal.dialog.params = params
-  smoke['finishbuilding_' + params.type] (modal, params)
+  smoke['finishbuilding_' + params.type](modal, params)
   
   if (dialog.title_element && dialog.title_element.title_close) {
-   dialog.title_element.title_close.addEventListener (dialog.params.point_event, dialog.cancel ? dialog.cancel: dialog.ok)
+   dialog.title_element.title_close.addEventListener(dialog.params.point_event, dialog.cancel ? dialog.cancel: dialog.ok)
    dialog.title_element.title_close.smoke_pure_modal = modal
   }
   
-  if ((typeof modal.dialog.prompt != "undefined") && (autofocus != false)) modal.dialog.prompt.input.focus ()
+  if ((typeof modal.dialog.prompt != "undefined") && (autofocus != false)) modal.dialog.prompt.input.focus()
   
-  modal.style.top = modal.savedScrollTop + "px"
-  parent.scrollTop = modal.savedScrollTop
+  modal.style.top = modal.savedScrollTop + "px"; parent.scrollTop = modal.savedScrollTop
   
   // Add a mutation observer that observes for the object's removal. If it is removed, destroy the listeners, reset the scroll top, and run smoke.window_closed.
   if (observe_mutation) {
@@ -214,28 +213,28 @@ void function () {
       if (mutation_item.type != 'childList') return
       for (var j = 0, curlen_j = mutation_item.removedNodes.length; j < curlen_j; j++) {
        if (mutation_item.removedNodes[j] != modal) continue
-       dialog.cleanup (observer)
-       if ((!window_closed_ran) && smoke.window_closed) {smoke.window_closed (modal, text, params); window_closed_ran = true}
+       dialog.destroy(observer)
+       if ((!window_closed_ran) && smoke.window_closed) {smoke.window_closed(modal, text, params); window_closed_ran = true}
        return
       }
      }
     })
-    observer.observe (parent, {attributes: false, childList: true, subtree: false})
+    observer.observe(parent, {attributes: false, childList: true, subtree: false})
    }
   }
   
-  dialog.cleanup = function (observer) {
-   if (modal.parentNode) modal.parentNode.removeChild (modal)
-   if (observer) observer.disconnect ()
-   dialog.listener_list.forEach (function (listener) {
-    document.removeEventListener (listener.event, listener.callback)
+  dialog.destroy = function (observer) {
+   if (modal.parentNode) modal.parentNode.removeChild(modal)
+   if (observer) observer.disconnect()
+   dialog.listener_list.forEach(function (listener) {
+    document.removeEventListener(listener.event, listener.callback)
     dialog.listener_list = []
    })
   }
   
-  dialog.close = function (truthy) {dialog.cleanup (dialog.removal_observer); dialog.params.callback (truthy)}
+  dialog.close = function (truthy) {dialog.destroy(dialog.removal_observer); dialog.params.callback(truthy)}
   
-  if (smoke.window_opened) smoke.window_opened (modal, text, params)
+  if (smoke.window_opened) smoke.window_opened(modal, text, params)
   
   for (var value in params) {
    if (smoke.extension[value]) smoke.extension[value](params[value], modal, text, callback, params)
@@ -247,21 +246,21 @@ void function () {
  
  smoke.finishbuilding_alert   = function (modal) {
   var dialog = modal.dialog
-  dialog.callback_ok = function () {dialog.params.callback ()}
+  dialog.callback_ok = function () {dialog.params.callback()}
   var ok_function_wrapper = dialog.ok = function (evt) {ok_function(evt, modal)}
-  smoke.add_global_listener (dialog, 'keyup', ok_function_wrapper)
-  dialog.buttons.ok.addEventListener (dialog.params.point_event, ok_function_wrapper)
+  smoke.add_global_listener(dialog, 'keyup', ok_function_wrapper)
+  dialog.buttons.ok.addEventListener(dialog.params.point_event, ok_function_wrapper)
   dialog.buttons.ok.smoke_pure_modal = modal
  }
  
  smoke.finishbuilding_confirm = function (modal) {
   var dialog = modal.dialog
-  dialog.callback_ok     = function () {dialog.params.callback (true)}
-  dialog.callback_cancel = function () {dialog.params.callback (false)}
+  dialog.callback_ok     = function () {dialog.params.callback(true)}
+  dialog.callback_cancel = function () {dialog.params.callback(false)}
   var ok_function_wrapper     = dialog.ok     = function (evt) {ok_function    (evt, modal)}
   var cancel_function_wrapper = dialog.cancel = function (evt) {cancel_function(evt, modal)}
-  smoke.add_global_listener (dialog, 'keyup', ok_function_wrapper)
-  smoke.add_global_listener (dialog, 'keyup', cancel_function_wrapper)
+  smoke.add_global_listener(dialog, 'keyup', ok_function_wrapper)
+  smoke.add_global_listener(dialog, 'keyup', cancel_function_wrapper)
   dialog.buttons.ok.addEventListener     (dialog.params.point_event, ok_function_wrapper)
   dialog.buttons.cancel.addEventListener (dialog.params.point_event, cancel_function_wrapper)
   dialog.buttons.ok.smoke_pure_modal     = modal
@@ -269,12 +268,12 @@ void function () {
  }
  smoke.finishbuilding_prompt  = function (modal) {
   var dialog = modal.dialog
-  dialog.callback_ok     = function () {dialog.params.callback (dialog.prompt.input.value)}
-  dialog.callback_cancel = function () {dialog.params.callback (false)}
+  dialog.callback_ok     = function () {dialog.params.callback(dialog.prompt.input.value)}
+  dialog.callback_cancel = function () {dialog.params.callback(false)}
   var ok_function_wrapper     = dialog.ok     = function (evt) {ok_function    (evt, modal)}
   var cancel_function_wrapper = dialog.cancel = function (evt) {cancel_function(evt, modal)}
-  smoke.add_global_listener (dialog, 'keyup', ok_function_wrapper)
-  smoke.add_global_listener (dialog, 'keyup', cancel_function_wrapper)
+  smoke.add_global_listener(dialog, 'keyup', ok_function_wrapper)
+  smoke.add_global_listener(dialog, 'keyup', cancel_function_wrapper)
   dialog.buttons.ok.addEventListener     (dialog.params.point_event, ok_function_wrapper)
   dialog.buttons.cancel.addEventListener (dialog.params.point_event, cancel_function_wrapper)
   dialog.buttons.ok.smoke_pure_modal     = modal
@@ -282,27 +281,27 @@ void function () {
  }
  
  smoke.add_global_listener = function (dialog, event, callback) {
-  document.addEventListener (event, callback)
+  document.addEventListener(event, callback)
   if (typeof dialog.listener_list == "undefined") dialog.listener_list = []
-  dialog.listener_list.push ({"event": event, "callback": callback})
+  dialog.listener_list.push({"event": event, "callback": callback})
  }
  
  function ok_function (evt, modal) {
   if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 13)))) return
-  if (modal.dialog.params.autoclose) modal.dialog.cleanup (modal.dialog.removal_observer)
-  modal.dialog.callback_ok ()
+  if (modal.dialog.params.autoclose) modal.dialog.destroy(modal.dialog.removal_observer)
+  modal.dialog.callback_ok()
  }
  function cancel_function (evt, modal) {
   if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 27)))) return
-  if (modal.dialog.params.autoclose) modal.dialog.cleanup (modal.dialog.removal_observer)
-  modal.dialog.callback_cancel ()
+  if (modal.dialog.params.autoclose) modal.dialog.destroy(modal.dialog.removal_observer)
+  modal.dialog.callback_cancel()
  }
  
  smoke.action_list = [{name : 'alert'}, {name : 'confirm'}, {name : 'prompt'}]
  
  smoke.action_list.forEach (function (current_action_entry) {
   var current_action = current_action_entry.name
-  smoke[current_action] = function (text, callback, params) {return smoke.build (text, merge_objects ({callback: callback, type: current_action}, params))}
+  smoke[current_action] = function (text, callback, params) {return smoke.build(text, merge_objects({callback: callback, type: current_action}, params))}
  })
  
  function merge_objects (secondary, primary) {
@@ -317,7 +316,7 @@ void function () {
  if (typeof module != 'undefined' && module.exports) {
   module.exports = smoke
  } else if (typeof define === 'function' && define.amd) {
-  define ('smoke', [], function() {return smoke})
+  define('smoke', [], function() {return smoke})
  } else {
   this.smoke = smoke
  }
