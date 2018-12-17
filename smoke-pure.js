@@ -129,7 +129,7 @@ void function () {
      var title_close = document.createElement('button')
      title_close.innerHTML = close_text
     }
-    title_close.classList.add (css_prefix + '-dialog-title-close')
+    title_close.classList.add(css_prefix + '-dialog-title-close')
     title_element.title_close = title_close
     title_element.appendChild(title_close)
    }
@@ -184,10 +184,10 @@ void function () {
   for (var current_structure_name in custom_css) {
    var property_array = current_structure_name.split (".")
    var current_element = modal
-   property_array.forEach (function (current_property) {current_element = current_element[current_property]})
+   property_array.forEach(function (current_property) {current_element = current_element[current_property]})
    var current_class_list = custom_css[current_structure_name]
    if (typeof current_class_list == "string") current_class_list = [current_class_list]
-   current_class_list.forEach (function (current_classname) {current_element.classList.add (current_classname)})
+   current_class_list.forEach(function (current_classname) {current_element.classList.add(current_classname)})
   }
   
   if (typeof params.callback != "function") params.callback = function () {}
@@ -287,7 +287,7 @@ void function () {
  }
  
  function ok_function (evt, modal) {
-  if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || (evt.keyCode != 13)))) return
+  if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || ((evt.keyCode != 13) && (evt.keyCode != 27)) ))) return
   if (modal.dialog.params.autoclose) modal.dialog.destroy(modal.dialog.removal_observer)
   modal.dialog.callback_ok()
  }
@@ -299,7 +299,7 @@ void function () {
  
  smoke.action_list = [{name : 'alert'}, {name : 'confirm'}, {name : 'prompt'}]
  
- smoke.action_list.forEach (function (current_action_entry) {
+ smoke.action_list.forEach(function (current_action_entry) {
   var current_action = current_action_entry.name
   smoke[current_action] = function (text, callback, params) {return smoke.build(text, merge_objects({callback: callback, type: current_action}, params))}
  })
