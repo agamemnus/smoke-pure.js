@@ -247,7 +247,7 @@ void function () {
  smoke.finishbuilding_alert   = function (modal) {
   var dialog = modal.dialog
   dialog.callback_ok = function () {dialog.params.callback()}
-  var ok_function_wrapper = dialog.ok = function (evt) {ok_function(evt, modal)}
+  var ok_function_wrapper = dialog.ok = function (evt) {ok_function(evt, modal, {allow_esc: true})}
   smoke.add_global_listener(dialog, 'keyup', ok_function_wrapper)
   dialog.buttons.ok.addEventListener(dialog.params.point_event, ok_function_wrapper)
   dialog.buttons.ok.smoke_pure_modal = modal
@@ -286,8 +286,9 @@ void function () {
   dialog.listener_list.push({"event": event, "callback": callback})
  }
  
- function ok_function (evt, modal) {
-  if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || ((evt.keyCode != 13) && (evt.keyCode != 27)) ))) return
+ function ok_function (evt, modal, options) {
+  options = options || {}
+  if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || ((evt.keyCode != 13) && (options.allow_esc && evt.keyCode != 27))))) return
   if (modal.dialog.params.autoclose) modal.dialog.destroy(modal.dialog.removal_observer)
   modal.dialog.callback_ok()
  }
