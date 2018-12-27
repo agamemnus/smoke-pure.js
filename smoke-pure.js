@@ -288,7 +288,7 @@ void function () {
  
  function ok_function (evt, modal, options) {
   options = options || {}
-  if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && ((evt.keyCode == 0) || ((evt.keyCode != 13) && (options.allow_esc && evt.keyCode != 27))))) return
+  if (evt && (((evt.type == "keyup") && (typeof evt.keyCode != "undefined")) && (evt.keyCode != 13 || (options.allow_esc && evt.keyCode != 27)))) return
   if (modal.dialog.params.autoclose) modal.dialog.destroy(modal.dialog.removal_observer)
   modal.dialog.callback_ok()
  }
