@@ -1,5 +1,5 @@
 {
- "name": "smoke.pure.js",
+ "name": "smoke-pure.js",
  "version" : "3.0.0",
  "description": "A simple and lightweight modal popup library for JS (Javascript). Sturgeon General's warning: 'Smoke-pure may be hazardous to your health'.",
  "main": "smoke-pure.js",
