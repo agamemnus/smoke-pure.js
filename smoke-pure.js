@@ -314,7 +314,7 @@ void function () {
   return new_object
  }
  
- if (typeof module != 'undefined' && module.exports) {
+if (typeof module != 'undefined') {
   module.exports = smoke
  } else if (typeof define === 'function' && define.amd) {
   define('smoke', [], function() {return smoke})
