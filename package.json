@@ -1,0 +1,10 @@
+{
+ "name": "smoke.pure.js",
+ "version" : "3.0.0",
+ "description": "A simple and lightweight modal popup library for JS (Javascript). Sturgeon General's warning: 'Smoke-pure may be hazardous to your health'.",
+ "main": "smoke-pure.js",
+ "dependencies": {},
+ "homepage": "https://github.com/agamemnus/smoke-pure.js",
+ "license": "MIT",
+ "repository": {"type": "git", "url": "git+https://github.com/agamemnus/smoke-pure.js.git"}
+}
