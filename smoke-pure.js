@@ -236,7 +236,7 @@ void function () {
   var close_ran = false
   dialog.close = function (truthy) {
    dialog.destroy(observer)
-   if (!close_ran) {dialog.params.callback(truthy); close_ran = true}
+   if (!close_ran) {close_ran = true; dialog.params.callback(truthy)}
   }
   
   if (smoke.window_opened) smoke.window_opened(modal, text, params)
