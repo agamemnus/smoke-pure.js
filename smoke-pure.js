@@ -225,6 +225,7 @@ void function () {
   
   dialog.destroy = function (observer) {
    if (modal.parentNode) modal.parentNode.removeChild(modal)
+   if (!observer) observer = dialog.removal_observer
    if (observer) observer.disconnect()
    dialog.listener_list.forEach(function (listener) {
     document.removeEventListener(listener.event, listener.callback)
@@ -232,7 +233,11 @@ void function () {
    })
   }
   
-  dialog.close = function (truthy) {dialog.destroy(dialog.removal_observer); dialog.params.callback(truthy)}
+  var close_ran = false
+  dialog.close = function (truthy) {
+   dialog.destroy(observer)
+   if (!close_ran) {dialog.params.callback(truthy); close_ran = true}
+  }
   
   if (smoke.window_opened) smoke.window_opened(modal, text, params)
   
@@ -298,7 +303,7 @@ void function () {
   modal.dialog.callback_cancel()
  }
  
- smoke.action_list = [{name : 'alert'}, {name : 'confirm'}, {name : 'prompt'}]
+ smoke.action_list = [{name: 'alert'}, {name: 'confirm'}, {name: 'prompt'}]
  
  smoke.action_list.forEach(function (current_action_entry) {
   var current_action = current_action_entry.name
