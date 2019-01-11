@@ -120,4 +120,4 @@ http://agamemnus.github.io/smoke-pure.js/example.htm
 
 Money?
 -----------
-No problem. I'll take it. https://www.gittip.com/agamemnus/
+No problem. I'll take it. (Edit: gittip doesn't exist anymore, so just send me pallets of cash -- you know where to find me.)
