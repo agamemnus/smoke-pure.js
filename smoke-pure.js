@@ -226,7 +226,7 @@ void function () {
   }
   
   dialog.destroy = function (observer) {
-   if (modal.parentNode) modal.parentNode.removeChild(modal)
+   if (modal.parentNode) {modal.parentNode.removeChild(modal); window.focus()}
    if (!observer) observer = dialog.removal_observer
    if (observer) observer.disconnect()
    dialog.listener_list.forEach(function (listener) {
