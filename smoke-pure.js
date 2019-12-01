@@ -296,7 +296,11 @@ void function () {
  
  function ok_function (evt, modal, options) {
   options = options || {}
-  if (evt) {if (((evt.type == 'keyup') && (typeof evt.keyCode != 'undefined')) && (evt.keyCode != 13 && (options.allow_esc && evt.keyCode != 27))) return}
+  if (!options.allow_esc) options.allow_esc = false
+  if (evt && evt.type == 'keyup' && typeof evt.keyCode != 'undefined') {
+   if (options.allow_esc && evt.keyCode != 13 && evt.keyCode != 27) return
+   if (!options.allow_esc && evt.keyCode != 13) return
+  }
   if (modal.dialog.params.autoclose) modal.dialog.destroy(modal.dialog.removal_observer)
   modal.dialog.callback_ok()
  }
