@@ -226,7 +226,7 @@ void function () {
   }
   
   dialog.destroy = function (observer) {
-   if (modal.parentNode) {modal.parentNode.removeChild(modal); window.focus()}
+   if (modal.parentNode) modal.parentNode.removeChild(modal)
    if (!observer) observer = dialog.removal_observer
    if (observer) observer.disconnect()
    dialog.listener_list.forEach(function (listener) {
@@ -302,11 +302,13 @@ void function () {
    if (!options.allow_esc && evt.keyCode != 13) return
   }
   if (modal.dialog.params.autoclose) modal.dialog.destroy(modal.dialog.removal_observer)
+  evt.stopPropagation()
   modal.dialog.callback_ok()
  }
  function cancel_function (evt, modal) {
   if (evt && (((evt.type == 'keyup') && (typeof evt.keyCode != 'undefined')) && ((evt.keyCode == 0) || (evt.keyCode != 27)))) return
   if (modal.dialog.params.autoclose) modal.dialog.destroy(modal.dialog.removal_observer)
+  evt.stopPropagation()
   modal.dialog.callback_cancel()
  }
  
