@@ -71,7 +71,7 @@ void function () {
   var input_default_value = (typeof params.value            != 'undefined') ? params.value            : smoke.value
   var callback            = (typeof params.callback         != 'undefined') ? params.callback         : smoke.callback
   var observe_mutation    = (typeof params.observe_mutation != 'undefined') ? params.observe_mutation : smoke.observe_mutation
-  var title               = (typeof params.title            != 'undefined') ? merge_objects(smoke.title, params.title) : smoke.title
+  var title               = (typeof params.title            != 'undefined') ? Object.assign({}, smoke.title, params.title) : smoke.title
   var window_opened       = (typeof params.window_opened    != 'undefined') ? params.window_opened    : smoke.window_opened
   var window_closed       = (typeof params.window_closed    != 'undefined') ? params.window_closed    : smoke.window_closed
   var use_wrapper         = (typeof params.use_wrapper      != 'undefined') ? params.use_wrapper      : smoke.use_wrapper
@@ -156,7 +156,13 @@ void function () {
   if (typeof ok_reference != 'undefined') {
    buttons.ok = ok_reference.cloneNode(true)
   } else {
-   buttons.ok = document.createElement('button'); buttons.ok.classList.add(css_prefix + '-dialog-buttons-ok'); buttons.ok.innerHTML = ok
+   buttons.ok = document.createElement('button')
+   buttons.ok.classList.add(css_prefix + '-dialog-buttons-ok')
+   buttons.ok.innerHTML = (typeof ok == 'string') ? ok : (
+    (typeof ok.text == 'string') ? ok.text : (
+     (typeof smoke.ok == 'string') ? smoke.ok : smoke.ok.text
+    )
+   )
   }
   
   // Create a "Cancel" button if the modal type is "prompt" or "confirm".
@@ -164,11 +170,17 @@ void function () {
    if (typeof cancel_reference != 'undefined') {
     buttons.cancel = cancel_reference.cloneNode(true)
    } else {
-    buttons.cancel = document.createElement('button'); buttons.cancel.classList.add(css_prefix + '-dialog-buttons-cancel'); buttons.cancel.innerHTML = cancel
+    buttons.cancel = document.createElement('button')
+    buttons.cancel.classList.add(css_prefix + '-dialog-buttons-cancel')
+    buttons.cancel.innerHTML = (typeof cancel == 'string') ? cancel : (
+     (typeof cancel.text == 'string') ? cancel.text : (
+      (typeof smoke.cancel == 'string') ? smoke.cancel : smoke.cancel.text
+     )
+    )
    }
   }
   
-  // Add "ok" and "cancel" buttons to the modal.
+  // Add 'ok' and 'cancel' buttons to the modal.
   switch (params.type) {
    case 'alert': buttons.appendChild(buttons.ok); break
    case 'prompt': case 'confirm':
@@ -197,7 +209,21 @@ void function () {
   smoke['finishbuilding_' + params.type](modal, params)
   
   if (dialog.title_element && dialog.title_element.title_close) {
-   dialog.title_element.title_close.addEventListener(dialog.params.point_event, dialog.cancel ? dialog.cancel: dialog.ok)
+   var cancelfunc = (typeof cancel == 'function') ? cancel : (
+    (typeof cancel.function == 'function') ? cancel.function : (
+     (typeof smoke.cancel == 'function') ? smoke.cancel : smoke.cancel.function
+    )
+   )
+   var okfunc = (typeof ok == 'function') ? ok : (
+    (typeof ok.function == 'function') ? ok.function : (
+     (typeof smoke.ok == 'function') ? smoke.ok : smoke.ok.function
+    )
+   )
+   dialog.title_element.title_close.addEventListener(dialog.params.point_event, 
+   function (n) {
+    if (cancelfunc) {cancelfunc(n)} else {if (okfunc) okfunc(n)}
+    if (dialog.cancel) {dialog.cancel(n)} else {if (dialog.ok) dialog.ok(n)}
+   })
    dialog.title_element.title_close.smoke_pure_modal = modal
   }
   
@@ -255,7 +281,7 @@ void function () {
  smoke.finishbuilding_alert   = function (modal) {
   var dialog = modal.dialog
   dialog.callback_ok = function () {dialog.params.callback(undefined, dialog._confirm_success)}
-  var ok_function_wrapper = dialog.ok = function (evt) {ok_function(evt, modal, {allow_esc: true})}
+  var ok_function_wrapper = dialog.ok = function (evt) {ok_function(evt, modal, {ok_keys: [13, 27]})}
   smoke.add_global_listener(dialog, 'keyup', ok_function_wrapper)
   dialog.buttons.ok.addEventListener(dialog.params.point_event, ok_function_wrapper)
   dialog.buttons.ok.smoke_pure_modal = modal
@@ -294,19 +320,25 @@ void function () {
   dialog.listener_list.push({'event': event, 'callback': callback})
  }
  
- function ok_function (evt, modal, options) {
-  options = options || {}
-  if (!options.allow_esc) options.allow_esc = false
-  if (evt && evt.type == 'keyup' && typeof evt.keyCode != 'undefined') {
-   if (options.allow_esc && evt.keyCode != 13 && evt.keyCode != 27) return
-   if (!options.allow_esc && evt.keyCode != 13) return
+ function ok_function (evt, modal, options = {ok_keys: [13]}) {
+  var params = modal.dialog.params
+  if (evt && evt.type == 'keyup') {
+   if (typeof evt.keyCode == 'undefined') return
+   if (!options.ok_keys.includes(evt.keyCode)) return
+   if (evt.keyCode == 13 && params.ignore_enter_key) return
+   if (evt.keyCode == 27 && params.ignore_escape_key) return
   }
-  if (modal.dialog.params.autoclose) modal.dialog.destroy(modal.dialog.removal_observer)
+  if (params.autoclose) modal.dialog.destroy(modal.dialog.removal_observer)
   modal.dialog.callback_ok()
  }
  function cancel_function (evt, modal) {
-  if (evt && (((evt.type == 'keyup') && (typeof evt.keyCode != 'undefined')) && ((evt.keyCode == 0) || (evt.keyCode != 27)))) return
-  if (modal.dialog.params.autoclose) modal.dialog.destroy(modal.dialog.removal_observer)
+  var params = modal.dialog.params
+  if (evt && evt.type == 'keyup') {
+   if (typeof evt.keyCode == 'undefined') return
+   //if (evt.keyCode == 0 || evt.keyCode != 27) return
+   if (evt.keyCode != 27 || params.ignore_escape_key) return
+  }
+  if (params.autoclose) modal.dialog.destroy(modal.dialog.removal_observer)
   modal.dialog.callback_cancel()
  }
  
@@ -314,19 +346,11 @@ void function () {
  
  smoke.action_list.forEach(function (current_action_entry) {
   var current_action = current_action_entry.name
-  smoke[current_action] = function (text, callback, params) {return smoke.build(text, merge_objects({callback: callback, type: current_action}, params))}
+  smoke[current_action] = function (text, callback, params) {return smoke.build(text, Object.assign({callback: callback, type: current_action}, params))
+  }
  })
  
- function merge_objects (secondary, primary) {
-  // The primary object's duplicate keys are superior. The secondary object's duplicate keys are inferior.
-  if (typeof secondary == 'undefined') var primary = primary.primary, secondary = primary.secondary
-  var new_object = {}
-  for (var property in secondary) {new_object[property] = secondary[property]}
-  for (var property in primary)   {new_object[property] = primary  [property]}
-  return new_object
- }
- 
-if (typeof module != 'undefined') {
+ if (typeof module != 'undefined') {
   module.exports = smoke
  } else if (typeof define === 'function' && define.amd) {
   define('smoke', [], function() {return smoke})
