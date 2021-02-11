@@ -358,3 +358,4 @@ void function () {
   window.smoke = smoke
  }
 } ()
+;
