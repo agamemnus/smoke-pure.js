@@ -71,7 +71,7 @@ void function () {
   var input_default_value = (typeof params.value            != 'undefined') ? params.value            : smoke.value
   var callback            = (typeof params.callback         != 'undefined') ? params.callback         : smoke.callback
   var observe_mutation    = (typeof params.observe_mutation != 'undefined') ? params.observe_mutation : smoke.observe_mutation
-  var title               = (typeof params.title            != 'undefined') ? Object.assign({}, smoke.title, params.title) : smoke.title
+  var title               = (typeof params.title            != "undefined") ? (typeof params.title == 'string' ? Object.assign({}, smoke.title, {text: params.title+''}) : Object.assign(smoke.title, params.title)) : smoke.title
   var window_opened       = (typeof params.window_opened    != 'undefined') ? params.window_opened    : smoke.window_opened
   var window_closed       = (typeof params.window_closed    != 'undefined') ? params.window_closed    : smoke.window_closed
   var use_wrapper         = (typeof params.use_wrapper      != 'undefined') ? params.use_wrapper      : smoke.use_wrapper
@@ -127,9 +127,8 @@ void function () {
     if (typeof title.close_reference != 'undefined') {
      var title_close = title.close_reference.cloneNode(true)
     } else {
-     var close_text = title.close
      var title_close = document.createElement('button')
-     title_close.innerHTML = close_text
+     title_close.innerHTML = title.close
     }
     title_close.classList.add(css_prefix + '-dialog-title-close')
     title_element.title_close = title_close
@@ -297,8 +296,7 @@ void function () {
   smoke.add_global_listener(dialog, 'keyup', cancel_function_wrapper)
   dialog.buttons.ok.addEventListener     (dialog.params.point_event, ok_function_wrapper)
   dialog.buttons.cancel.addEventListener (dialog.params.point_event, cancel_function_wrapper)
-  dialog.buttons.ok.smoke_pure_modal     = modal
-  dialog.buttons.cancel.smoke_pure_modal = modal
+  dialog.buttons.ok.smoke_pure_modal = dialog.buttons.cancel.smoke_pure_modal = modal
  }
  smoke.finishbuilding_prompt  = function (modal) {
   var dialog = modal.dialog
@@ -310,8 +308,7 @@ void function () {
   smoke.add_global_listener(dialog, 'keyup', cancel_function_wrapper)
   dialog.buttons.ok.addEventListener     (dialog.params.point_event, ok_function_wrapper)
   dialog.buttons.cancel.addEventListener (dialog.params.point_event, cancel_function_wrapper)
-  dialog.buttons.ok.smoke_pure_modal     = modal
-  dialog.buttons.cancel.smoke_pure_modal = modal
+  dialog.buttons.ok.smoke_pure_modal = dialog.buttons.cancel.smoke_pure_modal = modal
  }
  
  smoke.add_global_listener = function (dialog, event, callback) {
