@@ -71,7 +71,7 @@ void function () {
   var input_default_value = (typeof params.value            != 'undefined') ? params.value            : smoke.value
   var callback            = (typeof params.callback         != 'undefined') ? params.callback         : smoke.callback
   var observe_mutation    = (typeof params.observe_mutation != 'undefined') ? params.observe_mutation : smoke.observe_mutation
-  var title               = (typeof params.title            != "undefined") ? (typeof params.title == 'string' ? Object.assign({}, smoke.title, {text: params.title+''}) : Object.assign(smoke.title, params.title)) : smoke.title
+  var title               = (typeof params.title            != "undefined") ? (typeof params.title == 'string' ? Object.assign({}, smoke.title, {text: params.title+''}) : Object.assign({}, smoke.title, params.title)) : smoke.title
   var window_opened       = (typeof params.window_opened    != 'undefined') ? params.window_opened    : smoke.window_opened
   var window_closed       = (typeof params.window_closed    != 'undefined') ? params.window_closed    : smoke.window_closed
   var use_wrapper         = (typeof params.use_wrapper      != 'undefined') ? params.use_wrapper      : smoke.use_wrapper
