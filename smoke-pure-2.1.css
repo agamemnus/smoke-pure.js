@@ -1,0 +1,159 @@
+.smoke-base {
+ position         : fixed;
+ left             : 0;
+ top              : 0;
+ width            : 100%;
+ height           : 100%;
+ margin           : 0;
+ padding          : 0;
+ background-color : rgba(0,0,0,.4);
+ z-index          : 10002;
+ vertical-align   : middle;
+ justify-content  : center;
+ align-items      : center; 
+ display          : flex;
+}
+.smoke-dialog_wrapper {position: relative; vertical-align: middle; display: table-cell}
+
+.smoke-dialog {
+ color            : #202020;
+ border           : 1px solid #555555;
+ font-weight      : normal;
+ text-align       : center;
+ position         : relative; 
+ width            : 800px;
+ margin           : 20px; 
+ padding          : 0;
+ font-size        : 34px; 
+ border-radius    : 6px;
+ background-color : white; 
+ font-family      : Open Sans; 
+ overflow         : hidden;
+}
+
+.smoke-dialog-buttons {vertical-align: middle}
+
+.smoke-dialog-buttons > * {
+ margin           : 0 7px;
+ padding          : 12.6px 16.8px;
+ border           : 0;
+ border-radius    : 7px;
+ outline          : 0;
+ color            : white;
+ background-color : rgba(0,0,0,.40);
+ font-family      : arial;
+ font-weight      : bold;
+ text-transform   : uppercase;
+ vertical-align   : middle;
+ display          : inline-block;
+ cursor           : pointer;
+}
+
+.smoke-dialog-buttons > *, .smoke-dialog-buttons {line-height: 18.2px; font-size: 18.2px}
+
+.smoke-prompt input, .smoke-prompt select {
+ -moz-box-sizing  : border-box;
+ box-sizing       : border-box;
+ width            : 75%;
+ margin-top       : 18px;
+ margin-bottom    : 18px;
+ margin-left      : 0;
+ margin-right     : 0;
+ padding          : 11.2px;
+ border           : 1.4px solid #aaa;
+ outline          : none;
+ font-family      : arial;
+ font-size        : 22.4px;
+ background-color : white;
+ display          : inline-block;
+ text-align       : left;
+}
+
+/* <Smoke v3 (alert, prompt, etc.) classes.> */
+.smoke-dialog-text > * {margin-top: 18px}
+.smoke-dialog-text > *:first-child {margin-top: 0}
+.smoke-dialog-text > *:not(.smoke-dialog-text-horizontal) > *:first-child {margin-top: 0; margin-bottom: 0}
+/*.smoke-dialog-stretch-with_buttons .smoke-dialog-text {margin: 0 auto; height: 720px; border-bottom: 4px solid white}
+*/
+
+.smoke-dialog-stretch {width: auto; display: flex; flex-direction: column}
+.smoke-dialog-stretch .smoke-dialog-text {display: flex; flex: 1; justify-content: center; align-items: center; margin-bottom: 0; overflow: hidden}
+.smoke-dialog-stretch-with_buttons .smoke-dialog-text > img {max-width: calc(100vw - 80px); max-height: calc(100vh - 236px); object-fit: contain}
+@media (orientation: landscape) {.smoke-dialog-stretch-with_buttons .smoke-dialog-text > img {max-height: calc(100vh - 280px)}}
+
+.smoke-dialog-detailed_text .smoke-dialog-text p {text-align: left}
+.smoke-dialog-title-text {display: inline-block; flex-grow: 1}
+.smoke-soft_button, .smoke-dialog-title-close {cursor: pointer; color: white; text-align: center; transition: all .25s ease}
+.smoke-soft_button {color: #4ea9c1}
+.smoke-dialog-title-close {height: 30px; font-size: 32px; padding-left: 18px; padding-right: 18px; line-height: 30px; display: block} /* For the icoMoon close icon.*/
+.smoke-soft_button-large {width: 80px; height: 80px; font-size: 35px}
+.smoke-soft_button-large.custom_symbols {line-height: 80px}
+.smoke-soft_button-large.glyphicon {line-height: 78px; margin-bottom: 2px}
+.smoke-dialog-title-close-fat {cursor: pointer; font-size: 40px; /*color: #00ccff;*/ padding-left: 14px; padding-right: 14px; margin-top: 0; margin-bottom: 0} /* For the fat glyphicons-halflings close icon.*/
+.smoke-dialog-title-text + .smoke-dialog-title-close {margin-left: -68px}
+.smoke-soft_button:hover, .smoke-dialog-title-close:hover {color: #1c6f86 /*#0c69b6*/}
+.smoke-dialog-text {margin: 20px 18px 20px 18px}
+.smoke-dialog-text > *:last-child {margin-bottom: 0}
+.smoke-dialog-text > * > *:last-child {margin-bottom: 0}
+.smoke-dialog-buttons {margin: 20px 18px 18px 18px}
+.smoke-dialog-buttons > * {border-radius: 0; transition: all .5s ease}
+.smoke-dialog-buttons > *:hover {background-color: goldenrod}
+.smoke-dialog-buttons-ok:hover {background-color: #109414}
+.smoke-dialog-buttons-cancel:hover {background-color: #ce2038}
+.smoke-dialog-stretch-textonly {height: calc(100% - 40px); width: calc(100% - 40px); display: flex; flex-direction: column}
+
+.smoke-dialog-wide {width: 60%}
+.smoke-dialog-wide .smoke-dialog-text {text-align: left; text-indent: 1em}
+.smoke-dialog-vertical_stretch {display: flex; flex-direction: column; max-height: calc(100% - 40px)}
+.smoke-dialog-vertical_stretch .smoke-dialog-text {overflow-y: auto; margin-bottom: 0; display: block}
+.smoke-dialog-vertical_stretch .smoke-dialog-buttons {margin-top: 22px}
+@media (max-device-width: 768px) {.smoke-dialog-wide {width: 100%}}
+
+.smoke-dialog {border: 4px solid white; border-radius: 0; font-size: 28px}
+.smoke-dialog-title {width: 100%; padding-top: 25px; font-weight: 700; font-size: 34px; line-height: 30px; padding-bottom: 25px; border-bottom: none /*4px solid white*/; color: white; background-color: #4ea9c1 /*#63b4f5*/ /*#36a3fb*/; justify-content: space-between; flex-shrink: 0; display: flex}
+.smoke-dialog-title-single_close_button {position: absolute; width: 80px; right: 0; justify-content: center}
+.smoke-dialog-title-success {background-color: #41b910}
+.smoke-dialog-title-error {background-color: #f55c5c}
+.smoke-dialog-buttons > * {margin: 0 11px; padding: 18px 22px; font-family: Open Sans}
+.smoke-dialog-buttons > *, .smoke-dialog-buttons {font-size: 24px; line-height: 24px}
+.smoke-dialog-text-manualdocs_menu {overflow-y: auto; text-align: left}
+.smoke-dialog-text-manualdocs_menu-back_button {cursor: pointer; position: relative; margin-right: 20px; font-weight: normal; vertical-align: middle; text-align: center; display: inline-block}
+.smoke-dialog-text-manualdocs_menu-back_button, .smoke-dialog-text-manualdocs_menu-back_button + * {vertical-align: bottom; display: inline-block}
+.smoke-dialog-text-manualdocs_menu-back_button + * {line-height: 80px}
+.smoke-dialog-text-manualdocs_menu h1 {line-height: 0; margin-top: 0}
+/* </Smoke v3.> */
+
+/* <Smoke tabs.> */
+.smoke-dialog-title.smoke-dialog-title_with_tabs {margin-bottom: 0}
+.smoke-dialog-tabs {font-size: 28px; line-height: 28px; text-align: left; width: 100%; font-weight: 600; border-top: 4px solid white; border-bottom: 4px solid white; color: white; display: flex; align-items: stretch}
+.smoke-dialog-tab {background-color: #4ea9c1; padding-top: 8px; padding-bottom: 8px; padding-left: 8px; padding-right: 8px; margin-right: 4px; text-align: center; cursor: pointer; flex-grow: 1}
+.smoke-dialog-tab:hover {background-color: #2d6c7c}
+.smoke-dialog-tab-active {background-color: #3a8da1}
+.smoke-dialog-tab:last-child {margin-right: 0}
+.smoke-dialog-tab_empty { padding-top: 8px; padding-bottom: 8px; padding-left: 8px; padding-right: 8px; display: inline-block; flex-grow: 1}
+.smoke-dialog-tabs-underheader {margin-bottom: 26px; line-height: 16px}
+ /* </Smoke tabs.> */
+ 
+ /* <Smoke forms.> */
+.smoke-dialog-form {display: flex; flex-direction: column; text-align: left}
+.smoke-dialog-form-label {width: 220px; text-align: right; padding-right: 8px; display: inline-block}
+.smoke-dialog-form-input {width: 535px; padding-left: .45em; display: inline-block}
+ /* </Smoke forms.> */
+ 
+.smoke-dialog-content {display: flex; flex-direction: column; width: 100%; height: 100%}
+
+@media (max-device-width: 768px) {
+ .smoke-jumbo {
+  .smoke-dialog {width: 100%; height: 100%; margin: 0; border: 0; display: flex; flex-direction: column}
+  .smoke-dialog-text {margin: 0}
+  .smoke-dialog-title {padding-top: 50px; padding-bottom: 50px; font-size: 56px; line-height: 50px; border-bottom: none}
+  .smoke-prompt input {width: 100%; margin: 0; padding: 20px; border: 20px solid #3a8da1; border-left: 0; border-right: 0; border-bottom: 0; font-size: 40px}
+  .smoke-prompt {text-align: center; flex-grow: 1;}
+  .smoke-dialog-buttons {margin: 0; border-top: 20px solid grey; display: flex;}
+  .smoke-dialog-buttons > * {margin: 0; font-size: 60px; line-height: 60px; height: 200px}
+  .smoke-dialog-buttons-ok {background-color: #109414; width: 50%}
+  .smoke-dialog-buttons-cancel {background-color: #ce2038; width: 50%}
+  .smoke-dialog-tab {padding: 20px}
+  .smoke-dialog-tabs {font-size: 50px; line-height: 56px}
+ }
+}
