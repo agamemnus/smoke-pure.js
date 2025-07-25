@@ -280,7 +280,7 @@ void function () {
  smoke.finishbuilding_alert   = function (modal) {
   var dialog = modal.dialog
   dialog.callback_ok = function () {dialog.params.callback(undefined, dialog._confirm_success)}
-  var ok_function_wrapper = dialog.ok = function (evt) {ok_function(evt, modal, {ok_keys: [13, 27]})}
+  var ok_function_wrapper = dialog.ok = function (evt) {if (dialog.globalEmit) {dialog.globalEmit(evt)}; ok_function(evt, modal, {ok_keys: [13, 27]})}
   smoke.add_global_listener(dialog, 'keyup', ok_function_wrapper)
   dialog.buttons.ok.addEventListener(dialog.params.point_event, ok_function_wrapper)
   dialog.buttons.ok.smoke_pure_modal = modal
@@ -290,8 +290,8 @@ void function () {
   var dialog = modal.dialog
   dialog.callback_ok     = function () {dialog.params.callback(true, dialog._confirm_success)}
   dialog.callback_cancel = function () {dialog.params.callback(false, dialog._confirm_success)}
-  var ok_function_wrapper     = dialog.ok     = function (evt) {ok_function    (evt, modal)}
-  var cancel_function_wrapper = dialog.cancel = function (evt) {cancel_function(evt, modal)}
+  var ok_function_wrapper     = dialog.ok     = function (evt) {if (dialog.globalEmit) {dialog.globalEmit(evt)}; ok_function    (evt, modal)}
+  var cancel_function_wrapper = dialog.cancel = function (evt) {if (dialog.globalEmit) {dialog.globalEmit(evt)}; cancel_function(evt, modal)}
   smoke.add_global_listener(dialog, 'keyup', ok_function_wrapper)
   smoke.add_global_listener(dialog, 'keyup', cancel_function_wrapper)
   dialog.buttons.ok.addEventListener     (dialog.params.point_event, ok_function_wrapper)
@@ -302,8 +302,8 @@ void function () {
   var dialog = modal.dialog
   dialog.callback_ok     = function () {dialog.params.callback(dialog.prompt.input.value, dialog._confirm_success)}
   dialog.callback_cancel = function () {dialog.params.callback(false, dialog._confirm_success)}
-  var ok_function_wrapper     = dialog.ok     = function (evt) {ok_function    (evt, modal)}
-  var cancel_function_wrapper = dialog.cancel = function (evt) {cancel_function(evt, modal)}
+  var ok_function_wrapper     = dialog.ok     = function (evt) {if (dialog.globalEmit) {dialog.globalEmit(evt)}; ok_function    (evt, modal)}
+  var cancel_function_wrapper = dialog.cancel = function (evt) {if (dialog.globalEmit) {dialog.globalEmit(evt)}; cancel_function(evt, modal)}
   smoke.add_global_listener(dialog, 'keyup', ok_function_wrapper)
   smoke.add_global_listener(dialog, 'keyup', cancel_function_wrapper)
   dialog.buttons.ok.addEventListener     (dialog.params.point_event, ok_function_wrapper)
